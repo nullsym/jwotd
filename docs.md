@@ -1,6 +1,3 @@
-# What is this
-This is the source code for a website built in Flask. The website displays the Japenese word of the days that have been added by a Twitch bot in a database.
-
 ## Nginx stuff
 * Could not use unix sockets and had to end up using HTTP
 * You have /etc/nginx/sites-available/ and /etc/nginx/sites-enabled/ the latter has symlinks
@@ -11,9 +8,7 @@ pacman -Syu certbot-nginx
 # Get the certs for your site
 certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz
 
-############
-#  TODO    #
-############
+# TODO
 (*) Figure out gunicorn+prometheus
 (*) Set up Failtoban
 (***) Finish TODO in dbdriver........................TD
