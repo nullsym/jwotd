@@ -17,7 +17,6 @@ app.jinja_env.lstrip_blocks = True
 # Global vars
 DB_name = "../data.db"
 
-
 #############
 # DB helper #
 # functions #
@@ -81,36 +80,6 @@ def wotd_about():
 @app.route('/error')
 def error(msg=None):
     return render_template('error.html', error = msg)
-
-####################
-# YouTube Template #
-####################
-@app.route('/yt')
-def yt_index():
-    data = [('Day\'s Name', 'dayname'),
-            ('Month', 'month'),
-            ('Day', 'day'),
-            ('Year', 'year'),
-            ('Map', 'map'),
-            ('Hero', 'hero'),
-            ('Start Time', 'timestart'),
-            ('Talent 1', 't1'),
-            ('Talent 4', 't4'),
-            ('Talent 7', 't7'),
-            ('Talent 10', 't10'),
-            ('Talent 13', 't13'),
-            ('Talent 16', 't16'),
-            ('Talent 20', 't20'),
-            ('End Time', 'timeend')]
-    return render_template('yt.html', yt = data)
-
-@app.route('/yt/result', methods = ['POST', 'GET'])
-def yt_result():
-    if request.method == 'POST':
-        result = request.form
-        return render_template('ytresult.html', result = result)
-    else:
-        return error("Not a POST request")
 
 ########
 # Main #
