@@ -1,0 +1,10 @@
+# Do not track the databases
+**/*.db
+
+# Do not track random files
+cred.txt
+wotd
+
+# Do not track nodejs dependencies and bot stuff
+bot/node_modules
+bot/run

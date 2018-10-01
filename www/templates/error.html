@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sachiye's WOTD</title>
+  <style>
+    div {
+      border: 1px solid black;
+      margin: 0 auto;
+      width: 700px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>An error occurred</h1>
+    <img src="/static/error.jpg">
+    <h2>I will fix it as soon as you give me some catnip</h2>
+    <h3>Can I have catnip yet?</h3>
+    {% if error %}<h4>{{ error }}</h4>{% endif %}
+  </div>
+</body>
+</html>

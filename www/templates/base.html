@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Word of the Day</title>
+    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/static/fonts.css">
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    <!-- HEADER (navbar) -->
+    <header>
+      <h1>Sachiye's Word of the Day</h1>
+    </header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/rand">Random WOTD</a>
+      <!-- <a href="/flashcards">Flashcards</a> -->
+      <!-- <a style="float:right" href="/about">About</a> -->
+      <a href="/about">About</a>
+      <a style="float:right" href="/login">Login</a>
+    </nav>
+    <!-- CONTENT -->
+    {% block content %}{% endblock %}
+    <!-- END CONTENT -->
+    {% block footer %}{% endblock %}
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Template for YouTube</title>
+    <link rel="stylesheet" type="text/css" href="/static/yt.css">
+  </head>
+  <body>
+    <div class="div-container">
+      <h1><center>Template for Rennie's YouTube</center></h1>
+      <h2><center>Wooowe code</center></h2>
+      <form action="/yt/result" method="POST">
+        <div class="table">
+          {% for items in yt %}
+          <div class="row">
+            <div class="column">{{ items[0] }}</div>
+            <div class="column"><input type="text" name="{{ items[1] }}"></div>
+          </div>
+          {% endfor %}
+        </div>
+        <input type="submit">
+      </form>
+    </div>
+  </body>
+</html>

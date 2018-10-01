@@ -1,0 +1,24 @@
+/* https://gist.github.com/zoxon/29f81db0b5af8d4c1ec85ca2dcfc58c5 */
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Regular.otf);
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Bold.otf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Thin.otf);
+  font-weight: lighter;
+}
+
+@font-face {
+  font-family: "Overpass";
+  src: url(/static/fonts/overpass-mono/overpass-mono-bold.otf);
+}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+  {% if artlen == 0 %}
+    <article>
+      <p style="text-align:center">
+      You've reached the end of the road
+      </p>
+    </article>
+  {% else %}
+    {% for wotd_i in wotd %}
+        <article>
+          <h1>{{ wotd_i[1] }}</h1>
+          <time>{{ wotd_i[0] }}</time>
+          <p>{{ wotd_i[2] }}</p>
+        </article>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
+
+{% block footer %}
+  <footer>
+    {% if page == 0 %}
+      <a href="#" class="disable">&laquo; Prev</a>
+    {% else %}
+      <a href="/page/{{ page - 1 }}">&laquo; Prev</a>
+    {% endif %}
+    {% if artlen == delta %}
+      <a href="/page/{{ page + 1 }}">Next &raquo;</a>
+    {% else %}
+      <a href="#" class="disable">Next &raquo;</a>
+    {% endif %}
+  </footer>
+{% endblock %}

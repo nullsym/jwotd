@@ -1,0 +1,15 @@
+{
+  "name": "wotdbot",
+  "version": "1.0.0",
+  "description": "Bot for fetching the Word Of The Day (WOTD)",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "moment-timezone": "^0.5.21",
+    "tmi.js": "^1.2.1"
+  }
+}

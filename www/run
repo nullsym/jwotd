@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+opt="--workers 3"
+myip="127.0.0.1:8000"
+# myip="0.0.0.0:8000"
+# opt="--workers 3 --reload"
+# myip="0.0.0.0:8000"
+
+gunicorn $opt --bind $myip sachiye:app
+# gunicorn $opt --bind unix:gunicorn.sock sachiye:app

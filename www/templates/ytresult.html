@@ -1,0 +1,25 @@
+<style>p {white-space: pre-line;}</style>
+<p>Start time: {{ result.timestart }} - End time: {{ result.timeend }}
+
+Heroes of the Storm Gameplay: {{ result.hero }} on {{ result.map }} in HL 🔊 w/ Rentaro
+
+Rentaro queues up for some ranked Hero League, this game playing {{ result.hero }} on {{ result.map }}. In-game voice communication has been implemented into the game.
+
+Talent build used this game:
+[1]: {% if result.t1 %} {{ result.t1 }} {% else %} - {% endif %}
+[4]: {% if result.t4 %} {{ result.t4 }} {% else %} - {% endif %}
+[7]: {% if result.t7 %} {{ result.t7 }} {% else %} - {% endif %}
+[10]: {% if result.t10 %} {{ result.t10 }} {% else %} - {% endif %}
+[13]: {% if result.t13 %} {{ result.t13 }} {% else %} - {% endif %}
+[16]: {% if result.t16 %} {{ result.t16 }} {% else %} - {% endif %}
+[20]: {% if result.t20 %} {{ result.t20 }} {% else %} - {% endif %}
+
+(This video is an excerpt from Rentaro's stream on {{ result.dayname }}, {{ result.month }}, {{ result.day }}, {{ result.year }})
+
+Find Rentaro:
+http://twitch.tv/renniesaurus
+http://youtube.com/renniesaurus
+http://twitter.com/renniesaurus
+http://instagram.com/renniesaurus
+http://discord.gg/renniesaurus
+http://patreon.com/renniesaurus</p>

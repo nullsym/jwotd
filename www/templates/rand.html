@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <link rel="stylesheet" href="/static/flashcard.css">
+  <script>
+    function toggleCards() {
+      var FRONT = document.getElementById("front")
+      var BACK = document.getElementById("back")
+      if (FRONT.className === "front") {
+        FRONT.className = "fronth"
+        BACK.className = "back"
+      }
+      else {
+        FRONT.className = "front"
+        BACK.className = "backh"
+      }
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <article class="flashcard">
+    <input id="flashcard" type="checkbox" onclick="toggleCards()">
+    <label for="flashcard">
+      <section id="front" class="front">
+        {{ wotd[0][1] }}
+      </section>
+      <section id="back" class="backh">
+        {{ wotd[0][2] }}
+      </section>
+    </label>
+  </article>
+{% endblock %}

@@ -1,0 +1,8 @@
+# How to install the required modules
+
+* npm init
+* npm install tmi.js --save
+* npm install moment-timezone.js --save
+
+# How to launch the bot
+* node bot.js <username> <oath> <channels>
