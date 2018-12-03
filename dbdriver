@@ -55,7 +55,10 @@ def db_add(date, wotd, definition):
 
 
 def db_delete(date):
-    print('TODO: Deleting ' + date)
+    print("Deleting entry to date: " + date)
+    db_open()
+    DB.execute("DELETE FROM WOTD WHERE date = ?", (date,))
+    db_close()
 
 
 def db_mvdate(olddate, newdate):

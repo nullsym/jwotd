@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# https://medium.com/@jh3y/how-to-update-all-npm-packages-in-your-project-at-once-17a8981860ea
+
+echo npm update --save

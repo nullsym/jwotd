@@ -10,12 +10,12 @@ certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.x
 
 # TODO
 
-* Figure out gunicorn+prometheus
-* Set up Failtoban
-* Finish TODO in dbdriver
 * Write systemd unit file for gunicorn
 * "      "       "     "  for the bot
 * Make sure the auto renew for letsencrypt works
+* Finish TODO in dbdriver
+* Figure out gunicorn+prometheus
+* Set up Failtoban
 * Nav bar make it disappear when screen too small
 
 
