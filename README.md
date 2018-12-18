@@ -36,4 +36,15 @@ TODO: CHANGE ABOVE SCHEMA TO ONE BELLOW
 * Install: python-virtualenv
 * Activate the end: . venv/bin/activate
 * Upgrade pip: pip install --upgrade pip
-* Install things: pip install flask-limiter flask-login
+* Install things: pip install
+Flask
+Flask-Limiter
+Flask-Login
+Flask-SQLAlchemy
+
+Flask-FontAwesome
+
+gunicorn
+
+
+django-bulma

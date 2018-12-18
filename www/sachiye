@@ -53,7 +53,12 @@ login_manager.init_app(app)
 # By default Flask-Login uses flask.sessions for authentication.
 # Meaning we must set a secret key for our application.
 # app.secret_key = os.urandom(16)
-
+#
+# Rate limit to disuade password crackers
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+limiter = Limiter(app, key_func=get_remote_address,
+    default_limits=["200 per day", "50 per hour"])
 
 
 class User(UserMixin, db.Model):
@@ -92,6 +97,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("10 per hour")
 def login():
     if request.method == 'GET':
         if not current_user.is_anonymous:
@@ -201,6 +207,7 @@ def wotd_page(page):
     return render_template('index.html', wotd = data, artlen = len(data), page = page, delta = delta)
 
 @app.route('/rand')
+@limiter.exempt
 def wotd_rand():
     # (1) Open the DB
     g.db = connect_db()
