@@ -8,21 +8,24 @@
     {% block head %}{% endblock %}
   </head>
   <body>
-    <!-- HEADER (navbar) -->
+    <!-- HEADER -->
     <header>
       <h1>Sachiye's Word of the Day</h1>
     </header>
+    <!-- NAVBAR -->
     <nav>
       <a href="/">Home</a>
       <a href="/rand">Random WOTD</a>
-      <!-- <a href="/flashcards">Flashcards</a> -->
-      <!-- <a style="float:right" href="/about">About</a> -->
-      <a href="/about">About</a>
+      {% if current_user.is_anonymous %}
       <a style="float:right" href="/login">Login</a>
+      {% else %}
+      <a href="/admin/0">Admin</a>
+      <a style="float:right" href="/logout">Logout {{ current_user.username }}</a>
+      {% endif %}
     </nav>
     <!-- CONTENT -->
     {% block content %}{% endblock %}
-    <!-- END CONTENT -->
+    <!-- FOOTER -->
     {% block footer %}{% endblock %}
   </body>
 </html>

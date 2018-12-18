@@ -100,7 +100,7 @@ function onMessageHandler (target, context, msg, self) {
             // (Group 1) WOTD (Group 2) Definition
             var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?/
             if(findRegex(re, msg)) {
-                client.say(channels[0], 'Word of the day added')
+                client.say(channels[0], 'WOTD added')
                 if (!debugging) wotdAdd(PacificTime(), match1, match2)
                 return
             }
@@ -112,14 +112,14 @@ function onMessageHandler (target, context, msg, self) {
             // Assume current date
             var re = /!wotd add {{(.+)}} {{(.+)}}/
             if(findRegex(re, msg)) {
-                client.say(channels[0], 'Word of the day added')
+                client.say(channels[0], 'WOTD added')
                 if (!debugging) wotdAdd(PacificTime(), match1, match2)
                 return
             }
             // If are given a date
             var re = /!wotd add (\d{4}-\d{2}-\d{2}) {{(.+)}} {{(.+)}}/
             if(findRegex(re, msg)) {
-                client.say(channels[0], `Word of the day added [${match1}]`)
+                client.say(channels[0], `WOTD added [${match1}]`)
                 if (!debugging) wotdAdd(match1, match2, match3)
                 return
             }
@@ -131,13 +131,13 @@ function onMessageHandler (target, context, msg, self) {
             var re = /!wotd del (\d{4}-\d{2}-\d{2})/
             // If we are given a date
             if(findRegex(re, msg)) {
-                client.say(channels[0], 'Word of the day deleted')
+                client.say(channels[0], 'WOTD deleted')
                 if (!debugging) wotdDel(match1)
                 return
             }
             // When we are not given a date assume current date
             else {
-                client.say(channels[0], 'Word of the day deleted')
+                client.say(channels[0], 'WOTD deleted')
                 if (!debugging) wotdDel(PacificTime())
                 return
             }

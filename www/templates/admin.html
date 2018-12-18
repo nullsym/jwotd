@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="/static/admin.css">
+{% endblock %}
+{% block content %}
+  <!-- TODO: Add a search bar here -->
+  {% if artlen == 0 %}
+    <article>
+      <p style="text-align:center">
+        You've reached the end of the road
+      </p>
+    </article>
+  {% else %}
+    <!-- ADD an entry -->
+    <article class="admin">
+      <form action="/admin/{{ page }}" method="POST">
+          <input type="hidden" name="id" value="nope">
+          <input type="date" name="date" lang="ja-jp" value="" required autocomplete="off">
+          <input type="text" name="wotd" lang="ja-jp" placeholder="Add word of the day" required autocomplete="off">
+          <input type="text" name="def" lang="ja-jp" placeholder="Add definition" required autocomplete="off">
+          <button type="submit" name="add" value="add">Add</button>
+        </form>
+    </article>
+    <!-- DEL or UPDATE an entry -->
+    {% for wotd_i in wotd %}
+      <article class="admin">
+        <form action="/admin/{{ page }}" method="POST">
+          <input type="hidden" name="id" value="{{ wotd_i[0] }}">
+          <input type="date" name="date" lang="ja-jp" value="{{ wotd_i[0] }}" required autocomplete="off">
+          <input type="text" name="wotd" lang="ja-jp" value="{{ wotd_i[1] }}" required autocomplete="off">
+          <input type="text" name="def" lang="ja-jp" value="{{ wotd_i[2] }}" required autocomplete="off">
+          <button type="submit" name="update" value="update">Update</button>
+          <button type="submit" name="del" value="del">Delete</button>
+        </form>
+      </article>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
+{% block footer %}
+<footer>
+  <!-- Prev -->
+  {% if page == 0 %}
+    <a href="#" class="disable">&laquo; Prev</a>
+  {% else %}
+    <a href="/admin/{{ page - 1 }}">&laquo; Prev</a>
+  {% endif %}
+  <!-- Next -->
+  {% if artlen == delta %}
+    <a href="/admin/{{ page + 1 }}">Next &raquo;</a>
+  {% else %}
+    <a href="#" class="disable">Next &raquo;</a>
+  {% endif %}
+</footer>
+{% endblock %}
