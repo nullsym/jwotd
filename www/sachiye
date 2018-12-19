@@ -20,17 +20,10 @@ app = Flask(__name__)
 ###############
 # Global vars #
 ###############
-DB_name = "../data.db"
+DB_name = "/opt/sachiye/data.db"
 # Disable whitespace and newline weirdness
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
-
-
-
-
-
-
-
 
 ##############
 # DB & Admin #
@@ -44,7 +37,7 @@ from flask_login import login_user, logout_user
 from flask_login import UserMixin, current_user
 from flask import url_for
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/wotd.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////opt/sachiye/wotd.db'
 db = SQLAlchemy(app)
 # Flask-Login works via the LoginManager class.
 # Thus, we need to start things off by telling LoginManager about our Flask app.
@@ -52,9 +45,8 @@ login_manager = LoginManager(app)
 login_manager.init_app(app)
 # By default Flask-Login uses flask.sessions for authentication.
 # Meaning we must set a secret key for our application.
-# app.secret_key = os.urandom(16)
-#
-# Rate limit to disuade password crackers
+app.secret_key = os.urandom(16)
+# Rate limit password logins
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 limiter = Limiter(app, key_func=get_remote_address,
@@ -120,12 +112,13 @@ def login():
 # HTML that will allow logged users to edit the words of the day
 @app.route('/admin/<int:page>', methods=['GET', 'POST'])
 @login_required
+@limiter.exempt
 def admin(page):
     if request.method == 'POST':
+        wotd_id = request.form['id']
         date = request.form['date']
         wotd = request.form['wotd']
         wotd_def = request.form['def']
-        wotd_id = request.form['id']
         
         # (1) Open the DB
         g.db = connect_db()
@@ -134,19 +127,17 @@ def admin(page):
             g.db.execute("INSERT INTO WOTD VALUES (?, ?, ?)", (date, wotd, wotd_def))
         elif request.form.get('del'):
             print("del")
-            g.db.execute("DELETE FROM WOTD WHERE date = ?", (wotd_id,))
+            g.db.execute("DELETE FROM WOTD WHERE wotd = ?", (wotd,))
             g.db.commit()
         elif request.form.get('update'):
             print("update")
-            # g.db.execute("REPLACE INTO WOTD (Date, wotd, definition) VALUES (?,?,?)", (date, wotd, wotd_def))
+            #TODO: Fix this uglyness
             g.db.execute("DELETE FROM WOTD WHERE date = ?", (wotd_id,))
             g.db.execute("INSERT INTO WOTD VALUES (?, ?, ?)", (date, wotd, wotd_def))
         
         # (2) Save the changes into the DB
         g.db.commit()
-        # return 'You sent me:<br>{}<br>{}<br>{}<br>{}'.format(wotd_id, date, wotd, wotd_def)
         
-
     # Avoid error: int too large to convert to SQLite INTEGER
     if page.bit_length() > 32:
         return error("Integer too long")

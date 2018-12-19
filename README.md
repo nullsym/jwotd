@@ -34,7 +34,7 @@ TODO: CHANGE ABOVE SCHEMA TO ONE BELLOW
 
 # Virtual-environment
 * Install: python-virtualenv
-* Activate the end: . venv/bin/activate
+* Activate: . venv/bin/activate
 * Upgrade pip: pip install --upgrade pip
 * Install things: pip install
 Flask

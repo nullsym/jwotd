@@ -2,13 +2,12 @@
 
 import sqlite3
 import argparse
-import os, sys
+import os
 
 ###############
 # Global vars #
 ###############
-DIR_NAME = os.path.split(os.path.abspath(sys.argv[0]))[0]
-DB_NAME = DIR_NAME + "/data.db"
+DB_NAME = "/opt/sachiye/data.db"
 DB = None
 CONN = None
 
