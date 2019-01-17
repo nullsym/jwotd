@@ -33,18 +33,10 @@ TODO: CHANGE ABOVE SCHEMA TO ONE BELLOW
 
 
 # Virtual-environment
-* Install: python-virtualenv
-* Activate: . venv/bin/activate
-* Upgrade pip: pip install --upgrade pip
-* Install things: pip install
-Flask
-Flask-Limiter
-Flask-Login
-Flask-SQLAlchemy
+* Install: 		python-virtualenv
+* Initiate: 	mkdir venv && virtualenv venv
+* Activate: 	. venv/bin/activate
+* Upgrade pip: 	pip install --upgrade pip
+* Install:      pip install -r requirements.txt
 
-Flask-FontAwesome
-
-gunicorn
-
-
-django-bulma
+To freeze pip requirements: pip freeze > requirements.txt

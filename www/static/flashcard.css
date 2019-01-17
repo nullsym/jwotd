@@ -1,17 +1,4 @@
-article.flashcard {
-  margin: 20px auto;
-  width: 90%;
-  height: 100%;
-  max-width: 90%;
-  max-height: 100%;
-}
-
-/* Do not show the button */
-article.flashcard input {
-  display: none;
-}
-
-article.flashcard section {
+#flashcard section {
   padding: 200px 0;
   text-align: center;
   font-family: "Noto Sans JP", sans-serif;
@@ -19,15 +6,15 @@ article.flashcard section {
   font-weight: normal;
 }
 
-article.flashcard section.fronth {display: none;}
-article.flashcard section.front {
+#flashcard section.fronth {display: none;}
+#flashcard section.front {
   display: block;
   color: #BA1F53;
   background: #DDD;
 }
 
-article.flashcard section.backh {display: none;}
-article.flashcard section.back {
+#flashcard section.backh {display: none;}
+#flashcard section.back {
   display: block;
   color: #DDD;
   background: #C85073;

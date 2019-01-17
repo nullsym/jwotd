@@ -2,12 +2,26 @@
 
 {% block content %}
 
-<article>
-	<form action='login' method="post">
-		<input type="text" name="username" id="username" placeholder="email" required>
-		<input type="password" name="password" id="password" placeholder="password" required>
-		<input type="submit" name="submit" />
-	</form>
-</article>
+<section class="section">
+	<div class="container">
+		<div class="box has-background-white-bis">
+			<form action='login' method="post">
+				<div class="column">
+					<div class="column">Username</div>
+					<div class="column">
+						<input class="input" type="text" name="username" id="username" placeholder="username" required>
+					</div>
+					<div class="column">Password</div>
+					<div class="column">
+						<input class="input" type="password" name="password" id="password" placeholder="password" required>
+					</div>
+					<div class="column">
+						<input class="button" type="submit" name="submit" />
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
 
 {% endblock %}

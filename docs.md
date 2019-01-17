@@ -13,10 +13,11 @@ certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.x
 * Write systemd unit file for gunicorn
 * "      "       "     "  for the bot
 * Make sure the auto renew for letsencrypt works
-* Finish TODO in dbdriver
-* Figure out gunicorn+prometheus
 * Set up Failtoban
-* Nav bar make it disappear when screen too small
+* Figure out gunicorn+prometheus
+* Use Bulma
+* Change www/ to blueprints
+* Fix nginx so it loads static files from /opt/sachiye/git/www/static
 
 
 [1]: https://www.w3schools.com/html/html5_semantic_elements.asp

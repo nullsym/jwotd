@@ -98,6 +98,7 @@ function onMessageHandler (target, context, msg, self) {
         // Add WOTD to db automatically using regexes
         if (msg.includes("word of the day")) {
             // (Group 1) WOTD (Group 2) Definition
+            // TODO: Fix what if WOTD does not end in . or ."
             var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?/
             if(findRegex(re, msg)) {
                 client.say(channels[0], 'WOTD added')

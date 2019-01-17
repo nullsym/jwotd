@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+	<div class="container">
+		<div class="box has-background-white-bis">
+			<div class="column">
+				<a class="button" href="/logout">Logout: {{ current_user.username }}</a>
+			</div>
+			<div class="column">
+				<t1 class="title">Change password (needs to be finished since it does nothing atm.)</t1>
+			</div>
+			<div class="column">Old password</div>
+			<div class="column">
+				<input class="input" type="password" name="password" id="password" placeholder="password" required>
+			</div>
+			<div class="column">New Password</div>
+			<div class="column">
+				<input class="input" type="password" name="password" id="password" placeholder="password" required>
+			</div>
+			<div class="column">Repeat New Password</div>
+			<div class="column">
+				<input class="input" type="password" name="password" id="password" placeholder="password" required>
+			</div>
+			<div class="column">
+				<button class="is-disabled">Submit</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

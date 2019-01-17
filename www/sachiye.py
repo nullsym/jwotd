@@ -1,11 +1,6 @@
 #!/usr/bin/env python
-#
-# Requires:
-# community/python-flask-login
-# community/python-flask-sqlalchemy
-#
-#TODO: Use CSRF tokens on forms to prevent cross site request forgery(CSRF)
 
+#TODO: Use CSRF tokens on forms to prevent cross site request forgery(CSRF)
 # Flask
 from flask import Flask, render_template, request, redirect
 # DB
@@ -25,6 +20,7 @@ DB_name = "/opt/sachiye/data.db"
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
+
 ##############
 # DB & Admin #
 #   STUFF    #
@@ -43,14 +39,18 @@ db = SQLAlchemy(app)
 # Thus, we need to start things off by telling LoginManager about our Flask app.
 login_manager = LoginManager(app)
 login_manager.init_app(app)
+
 # By default Flask-Login uses flask.sessions for authentication.
 # Meaning we must set a secret key for our application.
-app.secret_key = os.urandom(16)
+app.secret_key = b'Wowee_secret_key_for_debugging\n\xec]/'
+# Create a new secret with the command:
+# python -c 'import os; print(os.urandom(16))'
+# app.secret_key = new key here
+
 # Rate limit password logins
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-limiter = Limiter(app, key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"])
+limiter = Limiter(app, key_func=get_remote_address)
 
 
 class User(UserMixin, db.Model):
@@ -95,7 +95,7 @@ def login():
         if not current_user.is_anonymous:
             return 'You are already logged in'
         return render_template('login.html')
-    
+
 
     elif request.method == 'POST':
         email = request.form['username']
@@ -107,37 +107,41 @@ def login():
             return redirect('/admin/0')
 
     return 'Bad login'
-    
+
 
 # HTML that will allow logged users to edit the words of the day
 @app.route('/admin/<int:page>', methods=['GET', 'POST'])
 @login_required
-@limiter.exempt
 def admin(page):
     if request.method == 'POST':
         wotd_id = request.form['id']
         date = request.form['date']
         wotd = request.form['wotd']
         wotd_def = request.form['def']
-        
+
+        print("+++++++ HERE BOI ++++++++++")
+        print(request.form)
         # (1) Open the DB
         g.db = connect_db()
+        
         if request.form.get('add'):
-            print("add")
+            print("Adding entry")
             g.db.execute("INSERT INTO WOTD VALUES (?, ?, ?)", (date, wotd, wotd_def))
+        
         elif request.form.get('del'):
-            print("del")
+            print("Deleting entry")
             g.db.execute("DELETE FROM WOTD WHERE wotd = ?", (wotd,))
             g.db.commit()
+        
         elif request.form.get('update'):
-            print("update")
-            #TODO: Fix this uglyness
+            print("Updating entry")
+            #TODO: Fix this uglyness. The delete logic is BROKEN.
             g.db.execute("DELETE FROM WOTD WHERE date = ?", (wotd_id,))
             g.db.execute("INSERT INTO WOTD VALUES (?, ?, ?)", (date, wotd, wotd_def))
-        
+
         # (2) Save the changes into the DB
         g.db.commit()
-        
+
     # Avoid error: int too large to convert to SQLite INTEGER
     if page.bit_length() > 32:
         return error("Integer too long")
@@ -150,12 +154,10 @@ def admin(page):
     # (3) Pass the data to the template
     return render_template('admin.html', wotd = data, artlen = len(data), page = page, delta = delta)
 
-
-
-
-
-
-
+@app.route('/user')
+@login_required
+def user():
+    return render_template('user.html')
 
 #############
 # DB helper #
@@ -184,11 +186,12 @@ def index():
     return redirect('/page/0')
 
 @app.route('/page/<int:page>')
+@limiter.limit("50 per hour", exempt_when=lambda: current_user.is_authenticated)
 def wotd_page(page):
     # Avoid error: int too large to convert to SQLite INTEGER
     if page.bit_length() > 32:
         return error("Integer too long")
-    delta = 4;
+    delta = 8;
     floor = page * delta;
     # (1) Open the DB
     g.db = connect_db()
@@ -198,7 +201,6 @@ def wotd_page(page):
     return render_template('index.html', wotd = data, artlen = len(data), page = page, delta = delta)
 
 @app.route('/rand')
-@limiter.exempt
 def wotd_rand():
     # (1) Open the DB
     g.db = connect_db()
@@ -206,6 +208,7 @@ def wotd_rand():
     data = g.db.execute("SELECT * FROM WOTD ORDER BY RANDOM() LIMIT 1").fetchall()
     # (3) Pass the data to the template
     return render_template('rand.html', wotd = data)
+
 
 @app.route('/error')
 def error(msg=None):
@@ -215,5 +218,4 @@ def error(msg=None):
 # Main #
 ########
 if __name__ == '__main__':
-    app.secret_key = b'Wowee_secret_key_for_debugging\n\xec]/'
     app.run(debug=True)

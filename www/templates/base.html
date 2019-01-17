@@ -1,30 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Word of the Day</title>
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
     <link rel="stylesheet" href="/static/fonts.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <!-- LOAD BULMA -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- JS for the navbar's hamburger -->
+    <script type="text/javascript">
+      function toggleNav() {
+              var nav = document.getElementById("navbarMain")
+              var a = document.getElementById("navbarBurguer")
+              if (nav.getAttribute("class") == "navbar-menu") {
+                  nav.className = "navbar-menu is-active"
+                  a.className = "navbar-burger is-active"
+              } else {
+                  nav.className = "navbar-menu"
+                  a.className = "navbar-burger"
+              }
+      }
+    </script>
+    <!-- END BULMA -->
     {% block head %}{% endblock %}
   </head>
   <body>
+
     <!-- HEADER -->
-    <header>
-      <h1>Sachiye's Word of the Day</h1>
-    </header>
+    <section class="hero is-info is-small is-bold" id="banner">
+      <div class="hero-body">
+        <div class="container has-text-right">
+          <h1 class="title has-text-dark is-bold is-bordered">
+          <span>Sachiye's&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="icon is-small"><i class="fas fa-book"></i></span>
+          </h1>
+          <h2 class="subtitle has-text-dark is-bold is-bordered">Word of the Day</h2>
+        </div>
+      </div>
+    </section>
+
     <!-- NAVBAR -->
-    <nav>
-      <a href="/">Home</a>
-      <a href="/rand">Random WOTD</a>
-      {% if current_user.is_anonymous %}
-      <a style="float:right" href="/login">Login</a>
-      {% else %}
-      <a href="/admin/0">Admin</a>
-      <a style="float:right" href="/logout">Logout {{ current_user.username }}</a>
-      {% endif %}
+    <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+      <!-- Will always be visible: where hamburguer menu resides -->
+      <div class="navbar-brand">
+        <a href="/" class="navbar-item">Home</a>
+        <a id="navbarBurguer" onclick="toggleNav()" \
+          role="button" class="navbar-burger" aria-label="menu" aria-expand="false" data-target="navbarMain">
+          <!-- It needs the 3 empty spans in order to visualize the hamburger lines when active -->
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <!-- The rest of the navbar -->
+      <div id="navbarMain" class="navbar-menu">
+        <div class="navbar-start">
+          <a href="/rand" class="navbar-item">Random WOTD</a>
+          {% if current_user.is_authenticated %}
+          <a href="/admin/0" class="navbar-item">Admin</a>
+          {% endif %}
+        </div>
+        <div class="navbar-end">
+          {% if current_user.is_authenticated %}
+          <a href="/user" class="navbar-item">
+            <span class="icon is-small"><i class="fas fa-user"></i></span><span>&nbsp;{{ current_user.username }}</span>
+          </a>
+          {% else %}
+          <a href="/login" class="navbar-item">
+            <span class="icon is-small"><i class="fas fa-user"></i></span><span>&nbsp;Login</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
     </nav>
+
     <!-- CONTENT -->
     {% block content %}{% endblock %}
+    
     <!-- FOOTER -->
     {% block footer %}{% endblock %}
   </body>
