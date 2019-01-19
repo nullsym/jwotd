@@ -23,10 +23,10 @@
     <div class="container" id="flashcard" onmouseover="toggleCards()" onmouseout="toggleCards()" onclick="toggleCards()">
       <label for="flashcard">
         <section id="front" class="front">
-          {{ wotd[0][1] }}
+          {{ wotd.wotd }}
         </section>
         <section id="back" class="backh">
-          {{ wotd[0][2] }}
+          {{ wotd.defn }}
         </section>
       </label>
     </div>

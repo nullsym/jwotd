@@ -1,0 +1,39 @@
+<div class="footer">
+  <!-- Macro declaration -->
+  {% macro render_pagination(pagination, endpoint) %}
+  <ul class="pagination-list">
+    {%- for page in pagination.iter_pages() %}
+      {% if page %}
+        {% if page != pagination.page %}
+          <li>
+            <a class="pagination-link" aria-label="Goto page {{ page }}" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+          </li>
+        {% else %}
+          <li>
+            <a class="pagination-link is-current" aria-label="Goto page {{ page }}" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+          </li>
+        {% endif %}
+      {% else %}
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+      {% endif %}
+    {%- endfor %}
+  </ul>
+  {% endmacro %}
+  <!-- END Macro -->
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+    <!-- PREV -->
+    {% if prev_url %}
+    <a class="pagination-previous" href="{{ prev_url }}">Previous</a>
+    {% else %}
+    <a class="pagination-previous" disabled>Previous</a>
+    {% endif %}
+    <!-- NEXT -->
+    {% if next_url %}
+    <a class="pagination-next" href="{{ next_url }}">Next page</a>
+    {% else %}
+    <a class="pagination-next" disabled>Next page</a>
+    {% endif %}
+    <!-- Now USE the macro -->
+    {{ render_pagination(pagination, page) }}
+  </nav>
+</div>

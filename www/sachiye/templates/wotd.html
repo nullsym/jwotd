@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  <div class="box has-background-white-bis" lang="ja-jp">
+      <h1 class="title is-size-3 is-spaced has-text-centered">{{ wotd.wotd }}</h1>
+      <h2 class="subtitle is-size-5 has-text-centered">{{ wotd.defn }}</h2>
+      <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.date }}</h3>
+      {% if wotd.classification %}
+        <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.classification }}</h3>
+      {% else %}
+        NA
+      {% endif %}
+      {% if wotd.extra %}
+        <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.extra }}</h3>
+      {% else %}
+        NA
+      {% endif %}
+  </div>
+
+  <div class="box has-background-grey-light" lang="ja-jp">
+    <b>This is a space for the comment section</b>
+  </div>
+
+</section>
+{% endblock %}

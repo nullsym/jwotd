@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    
+    <!-- ADD an entry -->
+    <div class="box has-background-grey-lighter">
+      <form action="/admin/" method="POST">
+        <input type="hidden" name="id" value="noneyet">
+        <div class="columns">
+          <div class="column is-4">
+            <input class="input is-large" type="text" name="wotd" lang="ja-jp" placeholder="Add word of the day" required autocomplete="off">
+          </div>
+          <div class="column is-8">
+            <input class="input is-large" type="text" name="def" lang="ja-jp" placeholder="Add definition" required autocomplete="off">
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column is-2">
+            <input class="input is-small" type="date" name="date" lang="ja-jp" value="" required autocomplete="off">
+          </div>
+          <div class="column is-10 has-text-right">
+            <button class="button is-info" type="submit" name="add" value="add">
+            <span class="icon is-small"><i class="fas fa-check"></i></span><span>Save</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- DEL or UPDATE an entry -->
+    {% for iter in wotd %}
+    <div class="box has-background-white-bis">
+      <form action="/admin/" method="POST">
+        <input type="hidden" name="id" value="{{ iter.uid }}">
+        <!-- WOTD AND ITS DEFINITION -->
+        <div class="columns">
+          <div class="column is-4">
+            <input class="input is-large" type="text" name="wotd" lang="ja-jp" value="{{ iter.wotd }}" required autocomplete="off">
+          </div>
+          <div class="column is-8">
+            <input class="input is-large" type="text" name="def" lang="ja-jp" value="{{ iter.defn }}" required autocomplete="off">
+          </div>
+        </div>
+        <!-- DATE AND BUTTONS -->
+        <div class="columns">
+          <div class="column is-2">
+            <input class="input is-small" type="date" name="date" lang="ja-jp" value="{{ iter.date }}" required autocomplete="off">
+          </div>
+          <div class="column is-10 has-text-right">
+            <div class="buttons is-right">
+              <button class="button is-success" type="submit" name="update" value="update">
+                <span class="icon is-small"><i class="fas fa-check"></i></span><span>Save</span>
+              </button>
+              <button class="button is-danger is-outlined" type="submit" name="del" value="del">
+                <span>Delete</span><span class="icon is-small"><i class="fas fa-times"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    {% endfor %}
+  </div> <br />
+</section>
+{% endblock %}
+
+{% block footer %}
+  {% include "pagination.html" %}
+{% endblock %}

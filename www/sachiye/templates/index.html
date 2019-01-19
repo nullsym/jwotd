@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+  {% for iter in wotd %}
+  <div class="container">
+    <div class="box has-background-white-bis" lang="ja-jp">
+        <!-- <h1 class="title is-size-3 is-spaced has-text-centered">{{ iter.wotd }}</h1> -->
+        <h1 class="title is-size-3 has-text-centered">{{ iter.wotd }}</h1>
+        <h2 class="subtitle is-size-5 has-text-centered">{{ iter.defn }}</h2>
+    </div>
+  </div><br />
+  {% endfor %}
+</section>
+{% endblock %}
+
+{% block footer %}
+  {% include "pagination.html" %}
+{% endblock %}

@@ -30,7 +30,7 @@
   <body>
 
     <!-- HEADER -->
-    <section class="hero is-info is-small is-bold" id="banner">
+    <section class="hero is-info is-small is-bold is-hidden-mobile" id="banner">
       <div class="hero-body">
         <div class="container has-text-right">
           <h1 class="title has-text-dark is-bold is-bordered">
@@ -59,7 +59,8 @@
         <div class="navbar-start">
           <a href="/rand" class="navbar-item">Random WOTD</a>
           {% if current_user.is_authenticated %}
-          <a href="/admin/0" class="navbar-item">Admin</a>
+          <a href="/admin/" class="navbar-item">Admin</a>
+          <a href="/wotd/3" class="navbar-item">Test</a>
           {% endif %}
         </div>
         <div class="navbar-end">

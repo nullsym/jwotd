@@ -2,8 +2,6 @@
 // https://docs.tmijs.org/v1.2.1/Commands.html
 // http://momentjs.com/timezone
 var tmi = require('tmi.js')
-var moment = require('moment-timezone')
-
 
 // Global vars for the WOTD
 var match1 = ""
@@ -46,12 +44,6 @@ client.connect()
 //////////////////////
 // Helper Functions //
 //////////////////////
-function PacificTime() {
-    var today = new Date()
-    var format = 'YYYY-MM-DD'
-    return moment(today, format).tz('America/Los_Angeles').format(format)
-}
-
 function findRegex(re, msg) {
     var match = re.exec(msg)
     if (match != null) {
@@ -74,17 +66,9 @@ function findRegex(re, msg) {
         return false;
 }
 
-function wotdAdd(date, wotd, def) {
+function wotdAdd(wotd, def) {
     const { spawnSync } = require('child_process'),
-        populate = spawnSync('../dbdriver', ['--add', date, wotd, def])
-
-    console.log(`[DB] stderr: ${populate.stderr.toString()}`);
-    console.log(`[DB] stdout: ${populate.stdout.toString()}`);
-}
-
-function wotdDel(date) {
-    const { spawnSync } = require('child_process'),
-        populate = spawnSync('../dbdriver', ['--delete', date])
+        populate = spawnSync('../dbdriver', ['--add', wotd, def])
 
     console.log(`[DB] stderr: ${populate.stderr.toString()}`);
     console.log(`[DB] stdout: ${populate.stdout.toString()}`);
@@ -102,7 +86,8 @@ function onMessageHandler (target, context, msg, self) {
             var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?/
             if(findRegex(re, msg)) {
                 client.say(channels[0], 'WOTD added')
-                if (!debugging) wotdAdd(PacificTime(), match1, match2)
+                if (!debugging)
+                    wotdAdd(match1, match2)
                 return
             }
             console.log(`[ERROR] Could not match against the regex: ${msg}`)
@@ -110,36 +95,11 @@ function onMessageHandler (target, context, msg, self) {
 
         // Add WOTD explicitely
         else if (msg.includes("!wotd add")) {
-            // Assume current date
             var re = /!wotd add {{(.+)}} {{(.+)}}/
             if(findRegex(re, msg)) {
                 client.say(channels[0], 'WOTD added')
-                if (!debugging) wotdAdd(PacificTime(), match1, match2)
-                return
-            }
-            // If are given a date
-            var re = /!wotd add (\d{4}-\d{2}-\d{2}) {{(.+)}} {{(.+)}}/
-            if(findRegex(re, msg)) {
-                client.say(channels[0], `WOTD added [${match1}]`)
-                if (!debugging) wotdAdd(match1, match2, match3)
-                return
-            }
-            console.log(`[ERROR] Could not match against the regex: ${msg}`)
-        }
-
-        // Delete WOTD explicitely
-        else if (msg.includes("!wotd del")) {
-            var re = /!wotd del (\d{4}-\d{2}-\d{2})/
-            // If we are given a date
-            if(findRegex(re, msg)) {
-                client.say(channels[0], 'WOTD deleted')
-                if (!debugging) wotdDel(match1)
-                return
-            }
-            // When we are not given a date assume current date
-            else {
-                client.say(channels[0], 'WOTD deleted')
-                if (!debugging) wotdDel(PacificTime())
+                if (!debugging)
+                    wotdAdd(match1, match2)
                 return
             }
             console.log(`[ERROR] Could not match against the regex: ${msg}`)
