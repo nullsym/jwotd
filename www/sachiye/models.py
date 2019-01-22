@@ -39,11 +39,13 @@ class User(UserMixin, db.Model):
 class Wotd(db.Model):
     uid = db.Column(db.Integer(), primary_key=True, unique=True)
     date = db.Column(db.String(), nullable=False, default=get_date())
+    # JP word, its romanji, and its definition. All required.
     wotd = db.Column(db.String(), nullable=False, unique=True)
+    romaji = db.Column(db.String(), nullable=False)
     defn = db.Column(db.String(), nullable=False)
-    
+    # Not required, but nice to have
     classification = db.Column(db.String(20))
-    extra = db.Column(db.Text())
+    example = db.Column(db.Text())
 
     def __repr__(self):
         return '<WOTD: %r:%r:%r>' % (self.uid, self.date, self.wotd)

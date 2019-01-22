@@ -1,19 +1,31 @@
 {% extends "base.html" %}
-
 {% block content %}
 <section class="section">
+<!--   {% if current_user.is_authenticated %}
+  <div class="container">
+    <div class="field has-addons">
+      <div class="control is-expanded">
+        <input type="text" class="input" placeholder="Find a word of the day">
+      </div>
+      <div class="control">
+        <a class="button is-info"> Search </a>
+      </div>
+    </div>
+  </div><br />
+  {% endif %} -->
+  <!-- Content -->
   {% for iter in wotd %}
   <div class="container">
-    <div class="box has-background-white-bis" lang="ja-jp">
-        <!-- <h1 class="title is-size-3 is-spaced has-text-centered">{{ iter.wotd }}</h1> -->
-        <h1 class="title is-size-3 has-text-centered">{{ iter.wotd }}</h1>
-        <h2 class="subtitle is-size-5 has-text-centered">{{ iter.defn }}</h2>
-    </div>
+    <a href="/wotd/{{ iter.uid }}">
+      <div class="box has-background-white-bis">
+            <h1 class="title is-size-3 has-text-centered" lang="ja-jp">{{ iter.wotd }} [{{ iter.romaji }}]</h1>
+            <h2 class="subtitle is-size-5 has-text-centered" lang="ja-jp">{{ iter.defn }}</h2>
+      </div>
+    </a>
   </div><br />
   {% endfor %}
 </section>
 {% endblock %}
-
 {% block footer %}
   {% include "pagination.html" %}
 {% endblock %}

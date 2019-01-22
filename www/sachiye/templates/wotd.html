@@ -1,26 +1,82 @@
 {% extends "base.html" %}
 
+{% if current_user.is_authenticated %}
+{% block head %}
+<script type="text/javascript">
+  function toggleEditModal() {
+    var modal = document.getElementById("editModal")
+    if (modal.getAttribute("class") === "modal") {
+      modal.className = "modal is-active"
+    } else {
+      modal.className = "modal"
+    }
+  }
+  
+  function toggleAddModal() {
+    var modal = document.getElementById("addModal")
+    if (modal.getAttribute("class") === "modal") {
+      modal.className = "modal is-active"
+    } else {
+      modal.className = "modal"
+    }
+  }
+  
+  function deleteButton() {
+    if (confirm('Do you really want to delete this Word of the Day?')) {
+      // form POST code
+      var formData = new FormData()
+      formData.append("del", "del")
+      formData.append("id", "{{ wotd.uid }}")
+      var request = new XMLHttpRequest()
+      request.open("POST", "/admin")
+      request.send(formData)
+      // Go to main page as this page was deleted
+      window.location.replace("/page")
+    } 
+  }
+</script>
+{% endblock %}
+{% endif %}
+
 {% block content %}
 <section class="section">
-  <div class="box has-background-white-bis" lang="ja-jp">
-      <h1 class="title is-size-3 is-spaced has-text-centered">{{ wotd.wotd }}</h1>
-      <h2 class="subtitle is-size-5 has-text-centered">{{ wotd.defn }}</h2>
-      <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.date }}</h3>
-      {% if wotd.classification %}
-        <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.classification }}</h3>
-      {% else %}
-        NA
-      {% endif %}
-      {% if wotd.extra %}
-        <h3 class="subtitle is-size-5 has-text-centered">{{ wotd.extra }}</h3>
-      {% else %}
-        NA
-      {% endif %}
+  {% if current_user.is_authenticated %}
+  <!-- ADMIN Panel -->
+  <div class="box has-background-warning"">
+    <p class="has-text-centered is-hidden-mobile"><b>Administration Panel</b></p>
+    <div class="columns">
+      <div class="column is-4">
+        <button class="button is-white" onclick="toggleEditModal()">Edit</button>
+        <button class="button is-white" onclick="toggleAddModal()">Add New</button>
+      </div>
+      <div class="column is-8 has-text-right">
+        <button class="button is-danger" type="submit" name="del" value="del" onclick="deleteButton()">Delete</button>
+      </div>
+    </div>
   </div>
-
-  <div class="box has-background-grey-light" lang="ja-jp">
-    <b>This is a space for the comment section</b>
+  <!-- MODAL -->
+  {% include "modal.html" %}
+  {% endif %}
+  <!-- CONTENT  -->
+  <div class="box has-background-white-bis">
+      <h1 class="title is-size-3 is-spaced has-text-centered" lang="ja-jp">{{ wotd.wotd }}</h1>
+      <h2 class="subtitle is-size-5 has-text-centered" lang="ja-jp">Romaji: {{ wotd.romaji }}</h2>
+      <h2 class="subtitle is-size-5 has-text-centered" lang="ja-jp">Definition: {{ wotd.defn }}</h2>
+      {% if wotd.example %}
+        <p>Examples or trivia</p>
+        <article class="message">
+          <div class="message-body">
+            <!-- TODO: examine Bulma content -->
+            <!-- https://bulma.io/documentation/elements/content/ -->
+            <p lang="ja-jp" style="white-space: pre-line;">{{ wotd.example }}</p>
+          </div>
+        </article>
+      {% endif %}
+      <nav class="level">
+        <div class="level-left"><p>Category: {{ wotd.classification }}</p></div>
+        <div class="level-right"><p>Date Added: {{ wotd.date }}</p></div>
+      </nav>
   </div>
-
 </section>
+<!-- {% include "comments.html" %} -->
 {% endblock %}

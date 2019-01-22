@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+fullpath=$(realpath $0)
+dir=$(dirname $fullpath)
+
+run_cmd() {
+    python dbadd.py -w "$1" -r "$2" -d "$3"
+}
+
+pushd . > /dev/null 2>&1
+cd $dir/www && source venv/bin/activate && sleep 1s
+run_cmd "$1" "$2" "$3"
+popd > /dev/null 2>&1

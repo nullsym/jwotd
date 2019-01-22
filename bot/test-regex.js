@@ -7,20 +7,21 @@ const rl = readline.createInterface({
   crlfDelay: Infinity
 });
 
-// (Group 1) WOTD (Group 2) Definition
 // Find the WOTD by maching any character following 'day:'
-// until a closing ] is found.
-// Find the defintion by following the WOTD until
-// a ". @" or a '." @' is found
-// var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?@.+/
-var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?/
+// (Group 1) Japanese WOTD
+// (Group 2) Romaji
+// (Group 3) Everything else
+// Add '?' after a on a quantifier to make its match non-greedy
+var re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
 
 rl.on('line', (line) => {
     var match = re.exec(line)
     if (match != null) {
         console.log("[PASS]")
+        // console.log(`Word: ${line}`)
         // console.log(`Match[1]: ${match[1]}`)
-        // console.log(`Match[2]: ${match[2]}\n`)
+        // console.log(`Match[2]: ${match[2]}`)
+        // console.log(`Match[3]: ${match[3]}\n`)
     }
     else {
         console.log("[FAIL]")

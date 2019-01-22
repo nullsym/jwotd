@@ -1,11 +1,39 @@
-/* https://gist.github.com/zoxon/29f81db0b5af8d4c1ec85ca2dcfc58c5 
- https://codepen.io/xmlmxmlmx/pen/bWwRoQ 
+/*
+  https://gist.github.com/zoxon/29f81db0b5af8d4c1ec85ca2dcfc58c5 
+  https://codepen.io/xmlmxmlmx/pen/bWwRoQ
+  
+  Filenames
+  ---------
+  NotoSansJP-Black.otf  NotoSansJP-Light.otf   NotoSansJP-Regular.otf
+  NotoSansJP-Bold.otf   NotoSansJP-Medium.otf  NotoSansJP-Thin.otf
+  
+  Noto Sans JP has: Thin, Light, Regular, Medium, Bold, Black
+  Thin:    100 (lightest)
+  Medium:  600 (between regular (400) and bold (700))
 */
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Thin.otf);
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Light.otf);
+  font-weight: lighter;
+}
 
 @font-face {
   font-family: "Noto Sans JP";
   src: url(/static/fonts/NotoSansJP-Regular.otf);
   font-weight: normal;
+}
+
+@font-face {
+  font-family: "Noto Sans JP";
+  src: url(/static/fonts/NotoSansJP-Medium.otf);
+  font-weight: 600;
 }
 
 @font-face {
@@ -16,11 +44,6 @@
 
 @font-face {
   font-family: "Noto Sans JP";
-  src: url(/static/fonts/NotoSansJP-Thin.otf);
-  font-weight: lighter;
-}
-
-@font-face {
-  font-family: "Overpass";
-  src: url(/static/fonts/overpass-mono/overpass-mono-bold.otf);
+  src: url(/static/fonts/NotoSansJP-Black.otf);
+  font-weight: bolder;
 }

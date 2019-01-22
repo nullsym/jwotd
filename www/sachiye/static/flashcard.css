@@ -3,7 +3,7 @@
   text-align: center;
   font-family: "Noto Sans JP", sans-serif;
   font-size: 32px;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 #flashcard section.fronth {display: none;}
@@ -16,6 +16,6 @@
 #flashcard section.backh {display: none;}
 #flashcard section.back {
   display: block;
-  color: #DDD;
-  background: #C85073;
+  color: #BA1F53;
+  background: #DFDFDF;
 }

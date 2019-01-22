@@ -1,0 +1,25 @@
+####################
+# Highest priority #
+####################
+* Fix the category dropdown menu for editing and adding WOTD
+* nginx always use HTTPS
+
+###################
+# Normal priority #
+###################
+* Add a comment system for '/wotd/{{ wotd.uid }}':
+  * Possible candidates: https://posativ.org/isso/
+* Implement WTForms
+* Use CSRF tokens in forms to prevent cross site request forgery(CSRF)
+    * https://wtforms.readthedocs.io/en/stable/csrf.html
+* Implement the search bar
+
+################
+# Low priority #
+################
+* Write systemd unit file for gunicorn
+* "      "       "     "  for the bot
+* Make sure the auto renew for letsencrypt works
+* Set up Failtoban
+* Figure out gunicorn+prometheus
+* Fix nginx so it loads static files from /opt/sachiye/git/www/static

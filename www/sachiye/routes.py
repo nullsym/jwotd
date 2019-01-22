@@ -7,16 +7,13 @@ from flask_login import login_user, logout_user
 # Import from our app
 from sachiye import app, db
 from sachiye.models import User, Wotd
+# To get a random WOTD
+from  sqlalchemy.sql.expression import func, select
 
 # Rate limit password logins
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 limiter = Limiter(app, key_func=get_remote_address)
-
-
-
-
-
 
 #############
 #   WOTD    #
@@ -38,9 +35,29 @@ def login():
 
         if user is not None and user.check_password(passwd):
             login_user(user, remember=True)
-            return redirect('/admin/')
+            return redirect(url_for('index'))
     
-    return 'Bad login'
+    return "Bad login"
+
+@app.route('/user', methods=['GET', 'POST'])
+@login_required
+def user():
+    print(current_user)
+    if request.method == 'POST':
+        passwd0 = request.form['password_old']
+        passwd1 = request.form['password_new1']
+        passwd2 = request.form['password_new2']
+
+        if passwd1 == passwd2 and current_user.check_password(passwd0):
+            # Save the changes to the DB
+            current_user.set_password(passwd1)
+            db.session.commit()
+            return 'Password changed'
+        elif passwd1 != passwd2 or not current_user.check_password(passwd0):
+            return 'The passwords did not match'
+
+        return render_template('user.html')
+    return render_template('user.html')
 
 @app.route('/logout')
 @login_required
@@ -48,60 +65,48 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/user')
+@app.route('/admin', methods=['POST'])
 @login_required
-def user():
-    return render_template('user.html')
-
-@app.route('/admin/', methods=['GET', 'POST'], defaults={'page': 1})
-@app.route('/admin/<int:page>')
-@login_required
-def admin(page):
+def admin():
     if request.method == 'POST':
-        # TODO: Add code to keep a history of the last X modified entries and by whom
-        print("DB CHANGE: " + str(request.form))
-        
-        form_id = request.form['id']
-        form_date = request.form['date']
-        form_wotd = request.form['wotd']
-        form_defn = request.form['def']
-
         if request.form.get('add'):
-            print("Add entry to DB")
-            db.session.add(Wotd(wotd=form_wotd, defn=form_defn, date=form_date))
+            print("Add WOTD")
+            db.session.add(Wotd(wotd=request.form['wotd'],
+                romaji=request.form['romaji'],
+                defn=request.form['def'],
+                date=request.form['date'],
+                example=request.form['example'],
+                classification=request.form['classification']))
+            # Save the changes to the DB
+            # db.session.commit()
+            return "New WOTD added"
         
         elif request.form.get('del'):
-            print("Delete entry in DB")
-            Wotd.query.filter_by(uid=form_id).delete()
+            print("Delete WOTD")
+            uid = request.form['id']
+            Wotd.query.filter_by(uid=uid).delete()
+            # Save the changes to the DB
+            db.session.commit()
+            return "WOTD deleted"
         
         elif request.form.get('update'):
-            print("Update entry in DB")
-            tmp = db.session.query(Wotd).get(form_id)
-            tmp.date = form_date
-            tmp.wotd = form_wotd
-            tmp.defn = form_defn
+            print("Update WOTD: " + str(current_user))
+            uid = request.form['id']
+            tmp = db.session.query(Wotd).get(uid)
+            tmp.date = request.form['date']
+            tmp.wotd = request.form['wotd']
+            tmp.romaji = request.form['romaji']
+            tmp.defn = request.form['def']
+            tmp.example = request.form['example']
+            tmp.classification = request.form['classification']
+            # Save the changes to the DB
+            db.session.commit()
+            return redirect('/wotd/' + uid)
 
-        # Save the changes to the DB
-        db.session.commit()
-
-    # Avoid error: int too large to convert to SQLite INTEGER
-    if page.bit_length() > 32:
-        return error("Integer too long")
-    
-    query = Wotd.query.order_by(Wotd.date.desc()).paginate(page, 10, True)
-    next_url = url_for('admin', page=query.next_num) if query.has_next else None
-    prev_url = url_for('admin', page=query.prev_num) if query.has_prev else None
-    
-    return render_template('admin.html', wotd = query.items,
-        pagination=query, page='admin',
-        next_url=next_url, prev_url=prev_url)
-
-
-
-
-
-
-
+        else:
+            return "Unknown Action"
+    else:
+        return "Method error (not a POST)"
 
 
 #############
@@ -114,17 +119,18 @@ def error(msg=None):
 
 @app.route('/rand')
 def wotd_rand():
-    # data = g.db.execute("SELECT * FROM WOTD ORDER BY RANDOM() LIMIT 1").fetchall()
-    query = Wotd.query.first()
+    # TODO: Research if there's a more efficient way of getting a random row
+    query = db.session.query(Wotd).order_by(func.random()).first()
     return render_template('rand.html', wotd = query)
 
 @app.route('/')
 def index():
     return redirect('/page/')
 
+# Main page
 @app.route('/page/', defaults={'page': 1})
 @app.route('/page/<int:page>')
-@limiter.limit("50 per hour", exempt_when=lambda: current_user.is_authenticated)
+@limiter.limit("100 per hour", exempt_when=lambda: current_user.is_authenticated)
 def wotd_page(page):
     # Avoid error: int too large to convert to SQLite INTEGER
     if page.bit_length() > 32:
@@ -138,9 +144,9 @@ def wotd_page(page):
         pagination=query, page='wotd_page',
         next_url=next_url, prev_url=prev_url)
 
-
+# Show a specific word of the day. Displays additional information
+# such as: examples, classification, and added date 
 @app.route('/wotd/<int:uid>')
-@login_required
 def wotd_uid(uid):
     query = db.session.query(Wotd).get(uid)
     return render_template('wotd.html', wotd = query)

@@ -1,34 +1,32 @@
 {% extends "base.html" %}
-
 {% block content %}
-
 <section class="section">
 	<div class="container">
 		<div class="box has-background-white-bis">
 			<div class="column">
 				<a class="button" href="/logout">Logout: {{ current_user.username }}</a>
 			</div>
-			<div class="column has-text-centered">
+<!-- 			<div class="column has-text-centered">
 				<t1 class="title">Change password</t1>
-				<br><t2 class="subtitle">to be implemented - does nothing at the moment</t2>
 			</div>
-			<div class="column">Old password</div>
-			<div class="column">
-				<input class="input" type="password" name="password" id="password" placeholder="password" required>
-			</div>
-			<div class="column">New Password</div>
-			<div class="column">
-				<input class="input" type="password" name="password" id="password" placeholder="password" required>
-			</div>
-			<div class="column">Repeat New Password</div>
-			<div class="column">
-				<input class="input" type="password" name="password" id="password" placeholder="password" required>
-			</div>
-			<div class="column">
-				<button class="is-disabled">Submit</button>
-			</div>
+			<form action="/user" method="POST">
+				<div class="column">Old password</div>
+				<div class="column">
+					<input class="input" type="password" name="password_old" id="password" placeholder="password" required>
+				</div>
+				<div class="column">New Password</div>
+				<div class="column">
+					<input class="input" type="password" name="password_new1" id="password" placeholder="password" required>
+				</div>
+				<div class="column">Repeat New Password</div>
+				<div class="column">
+					<input class="input" type="password" name="password_new2" id="password" placeholder="password" required>
+				</div>
+				<div class="column">
+					<button class="button" type="submit">Submit</button>
+				</div>
+			</form> -->
 		</div>
 	</div>
 </section>
-
 {% endblock %}

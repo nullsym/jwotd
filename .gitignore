@@ -1,9 +1,9 @@
-# Do not track random files
-**/__pycache__/
-
-# Do not track nodejs dependencies and bot stuff
+# Do not track nodejs dependencies
 bot/node_modules
-bot/run
-
 # Do not track Python's virtual environment
 www/venv
+# Do not track Python's cache
+**/__pycache__/
+# Do not track sensitive files
+www/secret.txt
+bot/run

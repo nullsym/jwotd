@@ -66,12 +66,12 @@ function findRegex(re, msg) {
         return false;
 }
 
-function wotdAdd(wotd, def) {
+function wotdAdd(wotd, romaji, def) {
     const { spawnSync } = require('child_process'),
-        populate = spawnSync('../dbdriver', ['--add', wotd, def])
-
-    console.log(`[DB] stderr: ${populate.stderr.toString()}`);
-    console.log(`[DB] stdout: ${populate.stdout.toString()}`);
+        populate = spawnSync('../dbadd', [wotd, romaji, def])
+    console.log(`[DB] stdout:\n${populate.stdout.toString()}`);
+    console.log(`[DB] stderr:\n${populate.stderr.toString()}`);
+    console.log(`[DB status]: ${populate.status.toString()}`);
 }
 
 ///////////////////////////////////////////
@@ -81,13 +81,14 @@ function onMessageHandler (target, context, msg, self) {
     if (context.username === "fansachiye" || context.username === "sachiyek") {
         // Add WOTD to db automatically using regexes
         if (msg.includes("word of the day")) {
-            // (Group 1) WOTD (Group 2) Definition
-            // TODO: Fix what if WOTD does not end in . or ."
-            var re = /.+the day:[ ]?(.+][ ]?)(.+\."?)[ ]?/
+            // (Group 1) Japanese WOTD
+            // (Group 2) Romaji
+            // (Group 3) Everything else
+            // Add '?' after a on a quantifier to make its match non-greedy
+            var re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
             if(findRegex(re, msg)) {
                 client.say(channels[0], 'WOTD added')
-                if (!debugging)
-                    wotdAdd(match1, match2)
+                wotdAdd(match1, match2, match3)
                 return
             }
             console.log(`[ERROR] Could not match against the regex: ${msg}`)
@@ -95,11 +96,10 @@ function onMessageHandler (target, context, msg, self) {
 
         // Add WOTD explicitely
         else if (msg.includes("!wotd add")) {
-            var re = /!wotd add {{(.+)}} {{(.+)}}/
+            var re = /!wotd add {{(.+)}} {{(.+)}} {{(.+)}}/
             if(findRegex(re, msg)) {
                 client.say(channels[0], 'WOTD added')
-                if (!debugging)
-                    wotdAdd(match1, match2)
+                wotdAdd(match1, match2, match3)
                 return
             }
             console.log(`[ERROR] Could not match against the regex: ${msg}`)
