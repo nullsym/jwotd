@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 // (Group 1) Japanese WOTD
 // (Group 2) Romaji
 // (Group 3) Everything else
-// Add '?' after a on a quantifier to make its match non-greedy
+// Add '?' after a quantifier to make its match non-greedy
 var re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
 
 rl.on('line', (line) => {

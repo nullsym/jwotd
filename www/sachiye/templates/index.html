@@ -1,18 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-<!--   {% if current_user.is_authenticated %}
-  <div class="container">
-    <div class="field has-addons">
-      <div class="control is-expanded">
-        <input type="text" class="input" placeholder="Find a word of the day">
-      </div>
-      <div class="control">
-        <a class="button is-info"> Search </a>
-      </div>
-    </div>
-  </div><br />
-  {% endif %} -->
   <!-- Content -->
   {% for iter in wotd %}
   <div class="container">
@@ -27,5 +15,5 @@
 </section>
 {% endblock %}
 {% block footer %}
-  {% include "pagination.html" %}
+  {% include "_pagination.html" %}
 {% endblock %}

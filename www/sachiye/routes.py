@@ -1,19 +1,21 @@
-from flask import render_template, request, redirect
-from flask import url_for
-from flask_login import current_user
-from flask_login import login_required
-from flask_login import login_user, logout_user
+from flask import render_template, request, redirect, flash, url_for
+from flask_login import current_user, login_user, logout_user, login_required
 
 # Import from our app
 from sachiye import app, db
 from sachiye.models import User, Wotd
 # To get a random WOTD
 from  sqlalchemy.sql.expression import func, select
+# For the search page
+from sqlalchemy import or_
 
 # Rate limit password logins
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 limiter = Limiter(app, key_func=get_remote_address)
+
+# Forms
+from sachiye.forms import LoginForm, UserForm
 
 #############
 #   WOTD    #
@@ -23,41 +25,41 @@ limiter = Limiter(app, key_func=get_remote_address)
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("10 per hour")
 def login():
+    form = LoginForm()
     if request.method == 'GET':
-        if not current_user.is_anonymous:
+        if current_user.is_anonymous:
+            return render_template('login.html', form=form)
+        else:
             return 'You are already logged in'
-        return render_template('login.html')
     
-    elif request.method == 'POST':
-        email = request.form['username']
-        passwd = request.form['password']
-        user = User.query.filter_by(username=email).first()
-
-        if user is not None and user.check_password(passwd):
+    elif request.method == 'POST' and form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.check_password(form.password.data):
             login_user(user, remember=True)
             return redirect(url_for('index'))
-    
-    return "Bad login"
+    # Return template if we couldn't finish the POST successfully
+    return render_template('login.html', form=form)
 
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def user():
-    print(current_user)
-    if request.method == 'POST':
-        passwd0 = request.form['password_old']
-        passwd1 = request.form['password_new1']
-        passwd2 = request.form['password_new2']
+    form = UserForm()
+    
+    if request.method == 'GET':
+        return render_template('user.html', form=form)
 
-        if passwd1 == passwd2 and current_user.check_password(passwd0):
+    elif request.method == 'POST' and form.validate_on_submit():
+        if current_user.check_password(form.currentpwd.data):
             # Save the changes to the DB
-            current_user.set_password(passwd1)
+            current_user.set_password(form.password.data)
             db.session.commit()
-            return 'Password changed'
-        elif passwd1 != passwd2 or not current_user.check_password(passwd0):
-            return 'The passwords did not match'
-
-        return render_template('user.html')
-    return render_template('user.html')
+            flash('Password changed successfully', 'primary')
+        else:
+            flash('The current password you gave me was invalid. Try again.', 'warning')
+    else:
+        flash('Try again. Make sure that both passwords are the same.', 'warning')
+    
+    return render_template('user.html', form=form)
 
 @app.route('/logout')
 @login_required
@@ -78,7 +80,7 @@ def admin():
                 example=request.form['example'],
                 classification=request.form['classification']))
             # Save the changes to the DB
-            # db.session.commit()
+            db.session.commit()
             return "New WOTD added"
         
         elif request.form.get('del'):
@@ -108,6 +110,17 @@ def admin():
     else:
         return "Method error (not a POST)"
 
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == "POST":
+        search = request.form.get('search')
+        searcht = '%' + request.form.get('search') + '%'
+        # query = Wotd.query.filter_by(romaji=search).all()
+        query = Wotd.query.filter(or_(Wotd.wotd.like(searcht), Wotd.romaji.like(search)))
+    else:
+        query = None
+    return render_template('search.html', wotd = query)
 
 #############
 #   WOTD    #
@@ -123,11 +136,10 @@ def wotd_rand():
     query = db.session.query(Wotd).order_by(func.random()).first()
     return render_template('rand.html', wotd = query)
 
+# Main page
 @app.route('/')
 def index():
     return redirect('/page/')
-
-# Main page
 @app.route('/page/', defaults={'page': 1})
 @app.route('/page/<int:page>')
 @limiter.limit("100 per hour", exempt_when=lambda: current_user.is_authenticated)

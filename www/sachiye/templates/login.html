@@ -3,18 +3,19 @@
 <section class="section">
 	<div class="container">
 		<div class="box has-background-white-bis">
-			<form action='login' method="post">
+			<form method="POST" action="">
+	            {{ form.hidden_tag() }}
 				<div class="column">
-					<div class="column">Username</div>
+					<div class="column">{{ form.username.label }}</div>
 					<div class="column">
-						<input class="input" type="text" name="username" id="username" placeholder="username" required>
+						{{ form.username(class="input") }}
 					</div>
-					<div class="column">Password</div>
+					<div class="column">{{ form.password.label }}</div>
 					<div class="column">
-						<input class="input" type="password" name="password" id="password" placeholder="password" required>
+						{{ form.password(class="input") }}
 					</div>
 					<div class="column">
-						<input class="button" type="submit" name="submit" />
+						{{ form.submit(class="button") }}
 					</div>
 				</div>
 			</form>

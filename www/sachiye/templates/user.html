@@ -1,31 +1,43 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+	<div class="container">
+		{% for category, message in messages %}
+			<div class="notification is-{{ category }}">
+			{{ message }}
+			</div>
+		{% endfor %}
+	</div><br />
+	{% endif %}
+	{% endwith %}
 	<div class="container">
 		<div class="box has-background-white-bis">
 			<div class="column">
 				<a class="button" href="/logout">Logout: {{ current_user.username }}</a>
 			</div>
-<!-- 			<div class="column has-text-centered">
+			<div class="column has-text-centered">
 				<t1 class="title">Change password</t1>
 			</div>
-			<form action="/user" method="POST">
-				<div class="column">Old password</div>
+			<form method="POST" action="">
+				{{ form.hidden_tag() }}
+				<div class="column">{{ form.currentpwd.label }}</div>
 				<div class="column">
-					<input class="input" type="password" name="password_old" id="password" placeholder="password" required>
+					{{ form.currentpwd(class="input") }}
 				</div>
-				<div class="column">New Password</div>
+				<div class="column">{{ form.password.label }}</div>
 				<div class="column">
-					<input class="input" type="password" name="password_new1" id="password" placeholder="password" required>
+					{{ form.password(class="input") }}
 				</div>
-				<div class="column">Repeat New Password</div>
+				<div class="column">{{ form.confirm_password.label }}</div>
 				<div class="column">
-					<input class="input" type="password" name="password_new2" id="password" placeholder="password" required>
+					{{ form.confirm_password(class="input") }}
 				</div>
 				<div class="column">
-					<button class="button" type="submit">Submit</button>
+					{{ form.submit(class="button") }}
 				</div>
-			</form> -->
+			</form>
 		</div>
 	</div>
 </section>
