@@ -1,4 +1,4 @@
-<div class="footer">
+<footer class="footer has-background-grey-darker">
   <!-- Macro declaration -->
   {% macro render_pagination(pagination, endpoint) %}
   <ul class="pagination-list">
@@ -6,7 +6,7 @@
       {% if page %}
         {% if page != pagination.page %}
           <li>
-            <a class="pagination-link" aria-label="Goto page {{ page }}" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+            <a class="pagination-link has-background-grey-lighter" aria-label="Goto page {{ page }}" href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
           </li>
         {% else %}
           <li>
@@ -23,17 +23,17 @@
   <nav class="pagination is-centered" role="navigation">
     <!-- PREV -->
     {% if prev_url %}
-    <a class="pagination-previous" href="{{ prev_url }}">Previous</a>
+    <a class="pagination-previous has-background-grey-lighter" href="{{ prev_url }}">Previous</a>
     {% else %}
     <a class="pagination-previous" disabled>Previous</a>
     {% endif %}
     <!-- NEXT -->
     {% if next_url %}
-    <a class="pagination-next" href="{{ next_url }}">Next page</a>
+    <a class="pagination-next has-background-grey-lighter" href="{{ next_url }}">Next page</a>
     {% else %}
     <a class="pagination-next" disabled>Next page</a>
     {% endif %}
     <!-- Now USE the macro -->
     {{ render_pagination(pagination, page) }}
   </nav>
-</div>
+</footer>

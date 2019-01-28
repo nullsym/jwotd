@@ -10,7 +10,7 @@
 <div class="modal" id="editModal">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <form action="/admin" method="POST">
+    <form action="/admin/edit" method="POST">
       <header class="modal-card-head">
         <p class="modal-card-title">Edit Word of the Day</p>
         <button class="delete" type="button" onclick="toggleEditModal()"></button>
@@ -72,7 +72,7 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" type="submit" name="update">Save</button>
+        <button class="button is-success" type="submit">Save</button>
         <button class="button" type="button" onclick="toggleEditModal()">Cancel</button>
       </footer>
     </form>
@@ -83,7 +83,7 @@
 <div class="modal" id="addModal">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <form action="/admin" method="POST">
+    <form action="/admin/add" method="POST">
       <header class="modal-card-head">
         <p class="modal-card-title">Add new Word of the Day</p>
         <button class="delete" type="button" onclick="toggleAddModal()"></button>
@@ -139,7 +139,7 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" type="submit" name="add">Save</button>
+        <button class="button is-success" type="submit">Save</button>
         <button class="button" type="button" onclick="toggleAddModal()">Cancel</button>
       </footer>
     </form>

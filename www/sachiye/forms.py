@@ -9,8 +9,16 @@ class LoginForm(FlaskForm):
 
 class UserForm(FlaskForm):
 	currentpwd = PasswordField('Current Password', validators=[DataRequired()])
-	password = PasswordField('New Password', validators=[DataRequired(), Length(min=3, max=60)])
-	# password = PasswordField('New Password', validators=[DataRequired(), Length(min=10, max=60)])
+	password = PasswordField('New Password', 
+		validators=[DataRequired(), Length(min=10, max=100)])
 	confirm_password = PasswordField('Confirm New Password', 
 		validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField("Change Password")
+
+
+
+class AddForm(FlaskForm):
+	pass
+
+class EditForm(FlaskForm):
+	pass

@@ -25,10 +25,9 @@
     if (confirm('Do you really want to delete this Word of the Day?')) {
       // form POST code
       var formData = new FormData()
-      formData.append("del", "del")
       formData.append("id", "{{ wotd.uid }}")
       var request = new XMLHttpRequest()
-      request.open("POST", "/admin")
+      request.open("POST", "/admin/del")
       request.send(formData)
       // Go to main page as this page was deleted
       window.location.replace("/page")

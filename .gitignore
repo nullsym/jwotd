@@ -1,5 +1,6 @@
 # Do not track nodejs dependencies
 bot/node_modules
+www/bulma/node_modules
 # Do not track Python's virtual environment
 www/venv
 # Do not track Python's cache

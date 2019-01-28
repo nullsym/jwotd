@@ -28,3 +28,11 @@ This is the source code for a website built in Flask. The website displays the J
 # Let us encrypt certificates
 * pacman -Syu certbot-nginx
 * certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz
+
+
+# Setting up the web environment
+## 1 Virtual Environment
+## 2 The CSS Framework Bulma with node
+1. npm init
+2. npm install node-sass bulma --save-dev
+3. npm run start

@@ -28,12 +28,12 @@ h2:lang(ja-jp) {
   font-weight: 600;
 }
 
-*:lang(ja-jp) {
-  font-family: "Noto Sans JP", sans-serif;
-  font-weight: 100;
-}
-
 p:lang(ja-jp) {
   font-family: "Noto Sans JP", sans-serif;
   font-weight: 600;
+}
+
+*:lang(ja-jp) {
+  font-family: "Noto Sans JP", sans-serif;
+  font-weight: 100;
 }

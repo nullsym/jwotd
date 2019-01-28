@@ -1,6 +1,8 @@
 ####################
 # Highest priority #
 ####################
+* SQL Injection. Implement a tester in the code and check code containing:
+    * filter_by and filter
 * nginx always use HTTPS
 
 ###################

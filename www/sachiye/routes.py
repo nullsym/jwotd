@@ -51,7 +51,7 @@ def user():
     elif request.method == 'POST' and form.validate_on_submit():
         if current_user.check_password(form.currentpwd.data):
             # Save the changes to the DB
-            current_user.set_password(form.password.data)
+            current_user.set_password(form.confirm_password.data)
             db.session.commit()
             flash('Password changed successfully', 'primary')
         else:
@@ -67,57 +67,54 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route('/admin', methods=['POST'])
-@login_required
-def admin():
-    if request.method == 'POST':
-        if request.form.get('add'):
-            print("Add WOTD")
-            db.session.add(Wotd(wotd=request.form['wotd'],
-                romaji=request.form['romaji'],
-                defn=request.form['def'],
-                date=request.form['date'],
-                example=request.form['example'],
-                classification=request.form['classification']))
-            # Save the changes to the DB
-            db.session.commit()
-            return "New WOTD added"
-        
-        elif request.form.get('del'):
-            print("Delete WOTD")
-            uid = request.form['id']
-            Wotd.query.filter_by(uid=uid).delete()
-            # Save the changes to the DB
-            db.session.commit()
-            return "WOTD deleted"
-        
-        elif request.form.get('update'):
-            print("Update WOTD: " + str(current_user))
-            uid = request.form['id']
-            tmp = db.session.query(Wotd).get(uid)
-            tmp.date = request.form['date']
-            tmp.wotd = request.form['wotd']
-            tmp.romaji = request.form['romaji']
-            tmp.defn = request.form['def']
-            tmp.example = request.form['example']
-            tmp.classification = request.form['classification']
-            # Save the changes to the DB
-            db.session.commit()
-            return redirect('/wotd/' + uid)
 
-        else:
-            return "Unknown Action"
-    else:
-        return "Method error (not a POST)"
+@app.route('/admin/edit', methods=['POST'])
+@login_required
+def admin_edit():
+    print("Update WOTD: " + str(current_user.username))
+    uid = request.form.get('id')
+    tmp = db.session.query(Wotd).get(uid)
+    tmp.date = request.form.get('date')
+    tmp.wotd = request.form.get('wotd')
+    tmp.romaji = request.form.get('romaji')
+    tmp.defn = request.form.get('def')
+    tmp.example = request.form.get('example')
+    tmp.classification = request.form.get('classification')
+    # Save the changes to the DB
+    db.session.commit()
+    return redirect('/wotd/' + uid)
+
+@app.route('/admin/add', methods=['POST'])
+@login_required
+def admin_add():
+    print("Add WOTD: " + str(current_user.username))
+    db.session.add(Wotd(wotd=request.form.get('wotd'),
+        romaji=request.form.get('romaji'),
+        defn=request.form.get('def'),
+        date=request.form.get('date'),
+        example=request.form.get('example'),
+        classification=request.form.get('classification')))
+    # Save the changes to the DB
+    db.session.commit()
+    return redirect(url_for('index'))
+
+@app.route('/admin/del', methods=['POST'])
+@login_required
+def admin_del():
+    print("Delete WOTD: " + str(current_user.username))
+    uid = request.form.get('id')
+    Wotd.query.filter_by(uid=uid).delete()
+    # Save the changes to the DB
+    db.session.commit()
+    return "WOTD deleted"
 
 @app.route('/search', methods=['GET', 'POST'])
 @login_required
 def search():
     if request.method == "POST":
         search = request.form.get('search')
-        searcht = '%' + request.form.get('search') + '%'
         # query = Wotd.query.filter_by(romaji=search).all()
-        query = Wotd.query.filter(or_(Wotd.wotd.like(searcht), Wotd.romaji.like(search)))
+        query = Wotd.query.filter(or_(Wotd.defn.like('%' + search + '%'), Wotd.romaji.like(search)))
     else:
         query = None
     return render_template('search.html', wotd = query)

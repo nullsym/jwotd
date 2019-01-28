@@ -8,7 +8,7 @@
           <input type="text" class="input" placeholder="Find a word of the day" name="search">
         </div>
         <div class="control">
-          <a class="button is-info" type="submit"> Search </a>
+          <button class="button is-info" type="submit"> Search </button>
         </div>
       </div>
     </form>
@@ -17,7 +17,7 @@
   {% if wotd %}
     {% for iter in wotd %}
     <div class="container">
-      <a href="/wotd/{{ iter.uid }}">
+      <a href="/wotd/{{ iter.uid }}" target="_blank">
         <div class="box has-background-white-bis">
               <h1 class="title is-size-3 has-text-centered" lang="ja-jp">{{ iter.wotd }} [{{ iter.romaji }}]</h1>
               <h2 class="subtitle is-size-5 has-text-centered" lang="ja-jp">{{ iter.defn }}</h2>
