@@ -51,14 +51,12 @@ def user():
     elif request.method == 'POST' and form.validate_on_submit():
         if current_user.check_password(form.currentpwd.data):
             # Save the changes to the DB
-            current_user.set_password(form.confirm_password.data)
-            db.session.commit()
+            # current_user.set_password(form.confirm_password.data)
+            # db.session.commit()
             flash('Password changed successfully', 'primary')
+            return redirect(url_for('index'))
         else:
-            flash('The current password you gave me was invalid. Try again.', 'warning')
-    else:
-        flash('Try again. Make sure that both passwords are the same.', 'warning')
-    
+            flash('Try again. Invalid current password.', 'danger')
     return render_template('user.html', form=form)
 
 @app.route('/logout')

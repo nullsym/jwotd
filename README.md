@@ -1,9 +1,9 @@
 # What is this
-This is the source code for a website built in Flask. The website displays the Japenese word of the days that have been added by a Twitch bot in a database.
+This is the source code for a website built in Flask. It shows Japanese words with their definition and a myriad of other information.
 
 # [WARNING]
 * To be able to run the website you need a to set up a secret in www/secret.txt
-* To do this just run: python3 -c 'import os; print(os.urandom(16))' > www/secret.txt
+* To do this just run: `python3 -c 'import os; print(os.urandom(16))' > www/secret.txt`
 
 # Tech Used
 * The flask server:   gunicorn
@@ -12,27 +12,22 @@ This is the source code for a website built in Flask. The website displays the J
 * CSS framework:      Bulma
 
 # Virtual-environment
-* Install: 		pacman -Syu python-virtualenv
-* Initiate: 	mkdir venv && virtualenv venv
-* Activate: 	. venv/bin/activate
-* Upgrade pip: 	pip install --upgrade pip
-* Install:      pip install -r requirements.txt
+1. Install: 	 `pacman -Syu python-virtualenv`
+2. Initiate: 	 `mkdir venv && virtualenv venv`
+3. Activate: 	 `source venv/bin/activate`
+4. Upgrade pip:  `pip install --upgrade pip`
+5. Install:      `pip install -r requirements.txt`
 
-# Virtual-environment common tasks
-* Freeze:       pip freeze > requirements.txt
-# Nginx stuff
+# Let us encrypt certificates
+1. `pacman -Syu certbot-nginx`
+2. `certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz`
+
+## Misc
+
+### Venv
+* Freeze: `pip freeze > requirements.txt`
+
+### Nginx
 * Could not use unix sockets and had to end up using HTTP
 * You have /etc/nginx/sites-available/ and /etc/nginx/sites-enabled/ the latter has symlinks
   to the latter for the sites we want to enable.
-
-# Let us encrypt certificates
-* pacman -Syu certbot-nginx
-* certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz
-
-
-# Setting up the web environment
-## 1 Virtual Environment
-## 2 The CSS Framework Bulma with node
-1. npm init
-2. npm install node-sass bulma --save-dev
-3. npm run start

@@ -1,17 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <section class="section">
-	{% with messages = get_flashed_messages(with_categories=true) %}
-	{% if messages %}
-	<div class="container">
-		{% for category, message in messages %}
-			<div class="notification is-{{ category }}">
-			{{ message }}
-			</div>
-		{% endfor %}
-	</div><br />
-	{% endif %}
-	{% endwith %}
 	<div class="container">
 		<div class="box has-background-white-bis">
 			<div class="column">
@@ -25,14 +14,36 @@
 				<div class="column">{{ form.currentpwd.label }}</div>
 				<div class="column">
 					{{ form.currentpwd(class="input") }}
+					{% if form.currentpwd.errors %}
+					<ul>
+						{% for error in form.currentpwd.errors %}
+						<li><span class="has-text-danger">{{ error }}</span></li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+
 				</div>
 				<div class="column">{{ form.password.label }}</div>
 				<div class="column">
 					{{ form.password(class="input") }}
+					{% if form.password.errors %}
+					<ul>
+						{% for error in form.password.errors %}
+						<li><span class="has-text-danger">{{ error }}</span></li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 				</div>
 				<div class="column">{{ form.confirm_password.label }}</div>
 				<div class="column">
 					{{ form.confirm_password(class="input") }}
+					{% if form.confirm_password.errors %}
+					<ul>
+						{% for error in form.confirm_password.errors %}
+						<li><span class="has-text-danger">{{ error }}</span></li>
+						{% endfor %}
+					</ul>
+					{% endif %}
 				</div>
 				<div class="column">
 					{{ form.submit(class="button") }}
