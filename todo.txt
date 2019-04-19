@@ -1,22 +1,5 @@
-####################
-# Highest priority #
-####################
-* SQL Injection. Implement a tester in the code and check code containing:
-    * filter_by and filter
-* nginx always use HTTPS
+* Use env variables and make bot/website run on docker container
 
-###################
-# Normal priority #
-###################
-* Add a comment system for '/wotd/{{ wotd.uid }}':
-  * Possible candidates: https://posativ.org/isso/
-
-################
-# Low priority #
-################
-* Write systemd unit file for gunicorn
-* "      "       "     "  for the bot
-* Make sure the auto renew for letsencrypt works
 * Set up Failtoban
+
 * Figure out gunicorn+prometheus
-* Fix nginx so it loads static files from /opt/sachiye/git/www/static

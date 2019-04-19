@@ -13,6 +13,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from pytz import timezone
 
+# Use the timezone of the person adding the WOTD
 def get_date():
     fmt = "%Y-%m-%d"
     naive = datetime.now(timezone('America/Los_Angeles'))
@@ -27,7 +28,7 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<user %r:%r>' % (self.username, self.password)
-    
+
     def set_password(self, password):
         self.password = generate_password_hash(password)
     def check_password(self, password):
@@ -44,8 +45,8 @@ class Wotd(db.Model):
     romaji = db.Column(db.String(), nullable=False)
     defn = db.Column(db.String(), nullable=False)
     # Not required, but nice to have
-    classification = db.Column(db.String(20))
     example = db.Column(db.Text())
+    classification = db.Column(db.String(20))
 
     def __repr__(self):
         return '<WOTD: %r:%r:%r>' % (self.uid, self.date, self.wotd)

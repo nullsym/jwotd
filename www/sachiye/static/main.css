@@ -2,14 +2,13 @@
  * MAIN *
  *******/
 body {
-  /*background: url("background.png");*/
-  /*background-repeat: repeat;*/
+  background: url("background.png");
+  background-repeat: repeat;
   min-height: 100vh;
-  background-color: whitesmoke;
 }
 
 #banner {
-  background: url("headers/header.jpg");
+  background: url("header.jpg");
   background-repeat: no-repeat;
   background-color: #f4e7f1;
 }

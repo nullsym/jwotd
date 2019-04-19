@@ -11,7 +11,7 @@
       modal.className = "modal"
     }
   }
-  
+
   function toggleAddModal() {
     var modal = document.getElementById("addModal")
     if (modal.getAttribute("class") === "modal") {
@@ -20,7 +20,7 @@
       modal.className = "modal"
     }
   }
-  
+
   function deleteButton() {
     if (confirm('Do you really want to delete this Word of the Day?')) {
       // form POST code
@@ -31,7 +31,7 @@
       request.send(formData)
       // Go to main page as this page was deleted
       window.location.replace("/page")
-    } 
+    }
   }
 </script>
 {% endblock %}
@@ -41,7 +41,7 @@
 <section class="section">
   {% if current_user.is_authenticated %}
   <!-- ADMIN Panel -->
-  <div class="box has-background-warning"">
+  <div class="box has-background-warning">
     <p class="has-text-centered is-hidden-mobile"><b>Administration Panel</b></p>
     <div class="columns">
       <div class="column is-4">

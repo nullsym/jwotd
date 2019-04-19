@@ -1,13 +1,5 @@
 #!/usr/bin/env bash
 
-# Start the virtual environment
-source venv/bin/activate
-
-# IF flask (for dev work)
-python run.py
-
-# IF gunicorn (for deployment)
-# myip="127.0.0.1:8000"
-# opt="--workers 3"
-# gunicorn $opt --bind $myip sachiye:app
-# gunicorn $opt --bind unix:gunicorn.sock sachiye:app
+myip="127.0.0.1:8000"
+opt="--workers 3"
+gunicorn $opt --bind $myip sachiye:app

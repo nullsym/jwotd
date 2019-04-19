@@ -31,7 +31,7 @@ def login():
             return render_template('login.html', form=form)
         else:
             return 'You are already logged in'
-    
+
     elif request.method == 'POST' and form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
@@ -40,11 +40,12 @@ def login():
     # Return template if we couldn't finish the POST successfully
     return render_template('login.html', form=form)
 
+
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def user():
     form = UserForm()
-    
+
     if request.method == 'GET':
         return render_template('user.html', form=form)
 
@@ -59,6 +60,7 @@ def user():
             flash('Try again. Invalid current password.', 'danger')
     return render_template('user.html', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -71,30 +73,32 @@ def logout():
 def admin_edit():
     print("Update WOTD: " + str(current_user.username))
     uid = request.form.get('id')
-    tmp = db.session.query(Wotd).get(uid)
-    tmp.date = request.form.get('date')
-    tmp.wotd = request.form.get('wotd')
-    tmp.romaji = request.form.get('romaji')
-    tmp.defn = request.form.get('def')
-    tmp.example = request.form.get('example')
-    tmp.classification = request.form.get('classification')
-    # Save the changes to the DB
-    db.session.commit()
+    form = EditForm()
+    if form.validate_on_submit():
+        tmp                 = db.session.query(Wotd).get(uid)
+        tmp.date            = form.date.data
+        tmp.wotd            = form.wotd.data
+        tmp.romaji          = form.romaji.data
+        tmp.defn            = form.defn.data
+        tmp.example         = form.example.data
+        tmp.classification  = form.classification.data
+        db.session.commit()
     return redirect('/wotd/' + uid)
 
 @app.route('/admin/add', methods=['POST'])
 @login_required
 def admin_add():
     print("Add WOTD: " + str(current_user.username))
-    db.session.add(Wotd(wotd=request.form.get('wotd'),
-        romaji=request.form.get('romaji'),
-        defn=request.form.get('def'),
-        date=request.form.get('date'),
-        example=request.form.get('example'),
-        classification=request.form.get('classification')))
-    # Save the changes to the DB
-    db.session.commit()
-    return redirect(url_for('index'))
+    form = AddForm()
+    if form.validate_on_submit():
+        db.session.add(Wotd(wotd=form.wotd.data,
+            romaji  = form.romaji.data,
+            defn    = form.defn.data,
+            date    = form.date.data,
+            example = form.example.data,
+            classification  = form.classification.data))
+        db.session.commit()
+    return 'Wotd added'
 
 @app.route('/admin/del', methods=['POST'])
 @login_required
@@ -142,7 +146,7 @@ def wotd_page(page):
     # Avoid error: int too large to convert to SQLite INTEGER
     if page.bit_length() > 32:
         return error("Integer too long")
-    
+
     query = Wotd.query.order_by(Wotd.date.desc()).paginate(page, 8, True)
     next_url = url_for('wotd_page', page=query.next_num) if query.has_next else None
     prev_url = url_for('wotd_page', page=query.prev_num) if query.has_prev else None
@@ -152,7 +156,7 @@ def wotd_page(page):
         next_url=next_url, prev_url=prev_url)
 
 # Show a specific word of the day. Displays additional information
-# such as: examples, classification, and added date 
+# such as: examples, classification, and added date
 @app.route('/wotd/<int:uid>')
 def wotd_uid(uid):
     query = db.session.query(Wotd).get(uid)

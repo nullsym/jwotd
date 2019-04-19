@@ -1,33 +1,27 @@
-# What is this
-This is the source code for a website built in Flask. It shows Japanese words with their definition and a myriad of other information.
+Sachiye
+=========
 
-# [WARNING]
-* To be able to run the website you need a to set up a secret in www/secret.txt
-* To do this just run: `python3 -c 'import os; print(os.urandom(16))' > www/secret.txt`
+A website that shows a list of Japanese words. Has an administration panel that allows editing, adding, and deleting entries.
 
-# Tech Used
-* The flask server:   gunicorn
-* The proxy:          nginx
-* The cert script:    certbot-nginx
-* CSS framework:      Bulma
+**Note**: Set up a secret in `www/secret.txt` by running: `python3 -c 'import os; print(os.urandom(16))' > www/secret.txt`
 
-# Virtual-environment
-1. Install: 	 `pacman -Syu python-virtualenv`
-2. Initiate: 	 `mkdir venv && virtualenv venv`
-3. Activate: 	 `source venv/bin/activate`
-4. Upgrade pip:  `pip install --upgrade pip`
-5. Install:      `pip install -r requirements.txt`
 
-# Let us encrypt certificates
-1. `pacman -Syu certbot-nginx`
-2. `certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz`
+### Virtual-environment
 
-## Misc
+1. Initiate:     `mkdir .venv && virtualenv .venv`
+2. Activate:     `source .venv/bin/activate`
+3. Upgrade pip:  `pip install --upgrade pip`
+4. Install:      `pip install -r requirements.txt`
+5. Freeze:       `pip freeze > requirements.txt`
 
-### Venv
-* Freeze: `pip freeze > requirements.txt`
+### Let's encrypt certificates
 
-### Nginx
-* Could not use unix sockets and had to end up using HTTP
-* You have /etc/nginx/sites-available/ and /etc/nginx/sites-enabled/ the latter has symlinks
-  to the latter for the sites we want to enable.
+1. Install: `pacman -Syu certbot-nginx`
+2. Run: `certbot certonly --webroot -w /var/lib/letsencrypt/ -d sachiye.xyz,www.sachiye.xyz`
+
+### Nginx notes
+
+* `/etc/nginx/sites-available/`
+* `/etc/nginx/sites-enabled/ `
+
+The latter has symlinks to the latter for the sites we want to enable.
