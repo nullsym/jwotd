@@ -4,26 +4,13 @@
     <meta charset="utf-8">
     <title>Word of the Day</title>
     <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
-    <link rel="stylesheet" href="/static/fonts.css">
-    <link rel="stylesheet" href="/static/main.css">
     <!-- LOAD BULMA & fontawesome -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/static/bulma.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <!-- JS for the navbar's hamburger -->
-    <script type="text/javascript">
-      function toggleNav() {
-              var nav = document.getElementById("navbarMain")
-              var a = document.getElementById("navbarBurguer")
-              if (nav.getAttribute("class") == "navbar-menu") {
-                  nav.className = "navbar-menu is-active"
-                  a.className = "navbar-burger is-active"
-              } else {
-                  nav.className = "navbar-menu"
-                  a.className = "navbar-burger"
-              }
-      }
-    </script>
+    <!-- LOAD Our own CSS -->
+    <link rel="stylesheet" href="/static/fonts.css">
+    <link rel="stylesheet" href="/static/main.css">
     <!-- END BULMA -->
     {% block head %}{% endblock %}
   </head>
@@ -88,11 +75,22 @@
     {% endif %}
     {% endwith %}
     {% endif %}
-    <!-- <br /><div class="container"> -->
-      <!-- <div class="notification is-info">A message</div> -->
-    <!-- </div> -->
     {% block content %}{% endblock %}
     <!-- FOOTER -->
     {% block footer %}{% endblock %}
+    <!-- JS for the navbar's hamburger -->
+    <script type="text/javascript">
+      function toggleNav() {
+              var nav = document.getElementById("navbarMain")
+              var a = document.getElementById("navbarBurguer")
+              if (nav.getAttribute("class") == "navbar-menu") {
+                  nav.className = "navbar-menu is-active"
+                  a.className = "navbar-burger is-active"
+              } else {
+                  nav.className = "navbar-menu"
+                  a.className = "navbar-burger"
+              }
+      }
+    </script>
   </body>
 </html>
