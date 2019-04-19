@@ -69,7 +69,7 @@ function onMessageHandler (channel, userobj, message, self) {
             // (Group 3) Everything else
             // Add '?' after a quantifier to make its match non-greedy
             let re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
-            if(findRegex(re, message)) {
+            if (findRegex(re, message)) {
                 client.say(channel, 'WOTD added')
                 wotdAdd(match1, match2, match3)
                 return
@@ -80,7 +80,7 @@ function onMessageHandler (channel, userobj, message, self) {
         // Add WOTD explicitely
         else if (message.includes("!wotd add")) {
             let re = /!wotd add {{(.+)}} {{(.+)}} {{(.+)}}/
-            if(findRegex(re, message)) {
+            if (findRegex(re, message)) {
                 client.say(channel, 'WOTD added')
                 wotdAdd(match1, match2, match3)
                 return
