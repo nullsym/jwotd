@@ -12,18 +12,14 @@ const rl = readline.createInterface({
 // (Group 2) Romaji
 // (Group 3) Everything else
 // Add '?' after a quantifier to make its match non-greedy
-var re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
+let re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
 
 rl.on('line', (line) => {
-    var match = re.exec(line)
+    let match = re.exec(line)
     if (match != null) {
         console.log("[PASS]")
-        // console.log(`Word: ${line}`)
-        // console.log(`Match[1]: ${match[1]}`)
-        // console.log(`Match[2]: ${match[2]}`)
-        // console.log(`Match[3]: ${match[3]}\n`)
     }
     else {
-        console.log("[FAIL]")
+        console.log(`[FAIL] ${line}`)
     }
 });

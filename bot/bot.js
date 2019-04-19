@@ -1,51 +1,33 @@
 // https://docs.tmijs.org/v1.2.1/Configuration.html
 // https://docs.tmijs.org/v1.2.1/Commands.html
 // http://momentjs.com/timezone
-var tmi = require('tmi.js')
+const tmi = require('tmi.js')
 
 // Global vars for the WOTD
-var match1 = ""
-var match2 = ""
-var match3 = ""
-debugging = process.argv[4] === "true" ? true : false
-
-// Create an array with the channels we want to join
-var channels = []
-for (let i = 5; i < process.argv.length; i++) {
-    channels.push(process.argv[i])
-}
+let match1 = ""
+let match2 = ""
+let match3 = ""
 
 // Define configuration options
-var options = {
-    options: { debug: debugging },
-    connection: { reconnect: true },
+const debugboolean = process.env.TWITCH_DEBUG === "true" ? true : false
+const options = {
+    options: { debug: debugboolean },
+    connection: { reconnect: true, secure: true },
     identity: {
-        username: process.argv[2],
-        password: process.argv[3]
+        username: process.env.TWITCH_USER,
+        password: process.env.TWITCH_PASSWD
     },
-    channels: channels
+    channels: [process.env.TWITCH_CHANNEL]
 }
 
-// Create a client with our options:
-var client = new tmi.client(options)
-
-
-///////////////////////////////////////////////
-// Events as per                             //
-// https://docs.tmijs.org/v1.2.1/Events.html //
-///////////////////////////////////////////////
-client.on('message', onMessageHandler)
-client.on('connected', onConnectedHandler)
-client.on('disconnected', onDisconnectedHandler)
-
-// Connect to Twitch:
-client.connect()
+// Create a client with our options
+const client = new tmi.client(options)
 
 //////////////////////
 // Helper Functions //
 //////////////////////
 function findRegex(re, msg) {
-    var match = re.exec(msg)
+    let match = re.exec(msg)
     if (match != null) {
         if (match[1]) {
             console.log(`[MATCH1] ${match[1]}`)
@@ -74,35 +56,36 @@ function wotdAdd(wotd, romaji, def) {
     console.log(`[DB status]: ${populate.status.toString()}`);
 }
 
-///////////////////////////////////////////
-// Called every time a message comes in //
-///////////////////////////////////////////
-function onMessageHandler (target, context, msg, self) {
-    if (context.username === "fansachiye" || context.username === "sachiyek") {
-        // Add WOTD to db automatically using regexes
-        if (msg.includes("word of the day")) {
+// Called every time a message comes in
+// https://docs.tmijs.org/v1.4.2/Events.html#chat
+function onMessageHandler (channel, userobj, message, self) {
+    // Allow only the streammer to add a WOTD
+    if (userobj.username === channel.replace("#", "")) {
+
+        // Add WOTD to db automatically using regular expressions
+        if (message.includes("word of the day")) {
             // (Group 1) Japanese WOTD
             // (Group 2) Romaji
             // (Group 3) Everything else
             // Add '?' after a quantifier to make its match non-greedy
-            var re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
-            if(findRegex(re, msg)) {
-                client.say(channels[0], 'WOTD added')
+            let re = /.+the day:[ ]?(.+?[ ]?)\[(.+?)\][ ]?(.+)/
+            if(findRegex(re, message)) {
+                client.say(channel, 'WOTD added')
                 wotdAdd(match1, match2, match3)
                 return
             }
-            console.log(`[ERROR] Could not match against the regex: ${msg}`)
+            console.log(`[ERROR] Could not match against the regex: ${message}`)
         }
 
         // Add WOTD explicitely
-        else if (msg.includes("!wotd add")) {
-            var re = /!wotd add {{(.+)}} {{(.+)}} {{(.+)}}/
-            if(findRegex(re, msg)) {
-                client.say(channels[0], 'WOTD added')
+        else if (message.includes("!wotd add")) {
+            let re = /!wotd add {{(.+)}} {{(.+)}} {{(.+)}}/
+            if(findRegex(re, message)) {
+                client.say(channel, 'WOTD added')
                 wotdAdd(match1, match2, match3)
                 return
             }
-            console.log(`[ERROR] Could not match against the regex: ${msg}`)
+            console.log(`[ERROR] Could not match against the regex: ${message}`)
         }
     }
     else return
@@ -118,3 +101,14 @@ function onDisconnectedHandler (reason) {
     console.log(`* Disconnected: ${reason}`)
     process.exit(1);
 }
+
+///////////////////////////////////////////////
+// Events as per                             //
+// https://docs.tmijs.org/v1.2.1/Events.html //
+///////////////////////////////////////////////
+client.on('message', onMessageHandler)
+client.on('connected', onConnectedHandler)
+client.on('disconnected', onDisconnectedHandler)
+
+// Connect to Twitch:
+client.connect()
