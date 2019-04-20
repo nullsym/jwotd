@@ -1,147 +1,73 @@
 <!-- MACROS -->
-{% macro option(text) %}
-{% if wotd.classification == text %}
-  <option selected>{{ text }}</option>
-{% else %}
-  <option>{{ text }}</option>
-{% endif %}
-{% endmacro %}
-<!-- Edit existing WOTD -->
-<div class="modal" id="editModal">
+{% macro modals(id, url, onclick, uid, wotd, romaji, defn, date, example, onclick2) -%}
+  <div class="modal" id="{{ id }}">
   <div class="modal-background"></div>
   <div class="modal-card">
-    <form method="POST" action="/admin/edit">
+    <form method="POST" action="{{ url }}">
+      {{ form.hidden_tag() }}
       <header class="modal-card-head">
         <p class="modal-card-title">Edit Word of the Day</p>
-        <button class="delete" type="button" onclick="toggleEditModal()"></button>
+        <button class="delete" type="button" onclick="{{ onclick }}"></button>
       </header>
       <section class="modal-card-body">
-        <input type="hidden" name="id" value="{{ wotd.uid }}">
+        {{ form.uid(type="hidden", value=uid) }}
         <!-- Japenese word -->
         <div class="field">
           <label class="label">Word of the day</label>
           <div class="control">
-            <input class="input" type="text" name="wotd" lang="ja-jp" value="{{ wotd.wotd }}" required>
+            {{ form.wotd(class="input", lang="ja-jp", autocomplete="off", value=wotd) }}
           </div>
         </div>
         <!-- Romaji -->
         <div class="field">
           <label class="label">Romaji</label>
           <div class="control">
-            <input class="input" type="text" name="romaji" lang="ja-jp" value="{{ wotd.romaji }}" required>
+            {{ form.romaji(class="input", lang="ja-jp", autocomplete="off", value=romaji) }}
           </div>
         </div>
         <!-- Definition -->
         <div class="field">
           <label class="label">Definition</label>
           <div class="control">
-            <input class="input" type="text" name="def" lang="ja-jp" value="{{ wotd.defn }}" required>
+            {{ form.defn(class="input", lang="ja-jp", autocomplete="off", value=defn) }}
           </div>
         </div>
         <!-- Category -->
         <div class="field">
           <label class="label">Category</label>
           <div class="select">
-            <select name="classification">
-              {% if wotd.classification == None %}
-              <option selected>None</option>
-              {% elif wotd.classification == "None" %}
-              <option selected>None</option>
-              {% endif %}
-              {{ option("Adjective") }}
-              {{ option("NA") }}
-              {{ option("Noun") }}
-              {{ option("Set Phrase") }}
-              {{ option("Verb") }}
-            </select>
+            {{ form.classification }}
           </div>
         </div>
         <!-- Date -->
         <div class="field">
           <label class="label">Date</label>
           <div class="control">
-            <input class="input" type="date" name="date" lang="ja-jp" value="{{ wotd.date }}" required>
+            {{ form.date(class="input", type="date", value=date) }}
           </div>
         </div>
         <!-- Examples -->
         <div class="field">
           <label class="label">Examples or Trivia</label>
           <div class="control">
-            <textarea class="textarea" placeholder="Textarea" name="example" lang="ja-jp">{{ wotd.example }}</textarea>
+            <textarea class="textarea" id="example" name="example" lang="ja-jp" autocomplete="off">{{ example }}</textarea>
           </div>
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" type="submit">Save</button>
-        <button class="button" type="button" onclick="toggleEditModal()">Cancel</button>
+        {{ form.submit(class="button is-success") }}
+        <button class="button" type="button" onclick="{{ onclick2 }}">Cancel</button>
       </footer>
     </form>
   </div>
 </div>
+{%- endmacro %}
 
-<!-- ADD NEW WOTD -->
-<div class="modal" id="addModal">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <form method="POST" action="/admin/add">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Add new Word of the Day</p>
-        <button class="delete" type="button" onclick="toggleAddModal()"></button>
-      </header>
-      <section class="modal-card-body">
-        <!-- Japenese word -->
-        <div class="field">
-          <label class="label">Word of the day</label>
-          <div class="control">
-            <input class="input" type="text" name="wotd" lang="ja-jp" placeholder="Word of the Day" required autocomplete="off">
-          </div>
-        </div>
-        <!-- Romaji -->
-        <div class="field">
-          <label class="label">Romaji</label>
-          <div class="control">
-            <input class="input" type="text" name="romaji" lang="ja-jp" placeholder="Romaji" required autocomplete="off">
-          </div>
-        </div>
-        <!-- Definition -->
-        <div class="field">
-          <label class="label">Definition</label>
-          <div class="control">
-            <input class="input" type="text" name="def" lang="ja-jp" placeholder="Definition" required autocomplete="off">
-          </div>
-        </div>
-        <!-- Category -->
-        <div class="field">
-          <label class="label">Category</label>
-          <div class="select">
-            <select name="classification">
-              <option selected>None</option>
-              <option>Verb</option>
-              <option>Noun</option>
-              <option>Adjective</option>
-              <option>Set Phrase</option>
-            </select>
-          </div>
-        </div>
-        <!-- Date -->
-        <div class="field">
-          <label class="label">Date</label>
-          <div class="control">
-            <input class="input" type="date" name="date" lang="ja-jp" value="{{ wotd.date }}" required>
-          </div>
-        </div>
-        <!-- Examples -->
-        <div class="field">
-          <label class="label">Examples or Trivia</label>
-          <div class="control">
-            <textarea class="textarea" placeholder="Examples or Trivia" name="example" lang="ja-jp" autocomplete="off"></textarea>
-          </div>
-        </div>
-      </section>
-      <footer class="modal-card-foot">
-        <button class="button is-success" type="submit">Save</button>
-        <button class="button" type="button" onclick="toggleAddModal()">Cancel</button>
-      </footer>
-    </form>
-  </div>
-</div>
+
+<!-- Edit Modal -->
+{{ modals("editModal", url_for('admin_edit'), "toggleEditModal()",
+    wotd.uid, wotd.wotd, wotd.romaji, wotd.defn, wotd.date, wotd.example, "toggleEditModal()") }}
+
+<!-- Add Modal -->
+{{ modals("addModal", url_for('admin_add'), "toggleAddModal()",
+    "", "", "", "", wotd.date, "", "toggleAddModal()") }}
