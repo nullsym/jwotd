@@ -3,3 +3,5 @@
 * Set up Failtoban
 
 * Figure out gunicorn+prometheus
+
+* Idea for bot? Ask for an example after the wotd, ask for strawpoll and add the most voted option

@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms.widgets import TextArea
 from wtforms.validators import DataRequired, Length, EqualTo
 
 class LoginForm(FlaskForm):
@@ -15,20 +16,22 @@ class UserForm(FlaskForm):
 		validators=[DataRequired(), EqualTo('password')])
 	submit = SubmitField("Change Password")
 
-class AddForm(FlaskForm):
-	wotd = StringField('Word of the day', validators=[DataRequired()])
-	romaji = StringField('Romaji', validators=[DataRequired()])
-	defn = StringField('Definition', validators=[DataRequired()])
-	date = StringField('Date', validators=[DataRequired()])
-	classification = StringField('Category')
-	example = StringField('Examples or Trivia')
-	submit = SubmitField("Save")
 
-class EditForm(FlaskForm):
-	wotd = StringField('Word of the day', validators=[DataRequired()])
-	romaji = StringField('Romaji', validators=[DataRequired()])
-	defn = StringField('Definition', validators=[DataRequired()])
-	date = StringField('Date', validators=[DataRequired()])
-	classification = StringField('Category')
-	example = StringField('Examples or Trivia')
+class WotdForm(FlaskForm):
+	wotd = 		StringField('Word of the day', validators=[DataRequired()])
+	romaji = 	StringField('Romaji', validators=[DataRequired()])
+	defn = 		StringField('Definition', validators=[DataRequired()])
+	date = 		StringField('Date', validators=[DataRequired()])
+	# Not required, but nice to have
+	uid = StringField('UID') # Speficically for Edit Form
+	example = 			StringField('Examples or Trivia', widget=TextArea())
+    # https://wtforms.readthedocs.io/en/stable/fields.html#wtforms.fields.SelectField
+	classification = 	SelectField('Category',
+		choices=[
+			('None', 'None'),
+			('Verb', 'Verb'),
+			('Noun', 'Noun'),
+			('Adjective', 'Adjective'),
+			('Set Phrase', 'Set Phrase')
+		])
 	submit = SubmitField("Save")
