@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, flash, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 
 # Import from our app
-from sachiye import app, db
-from sachiye.models import User, Wotd
+from wotd import app, db
+from wotd.models import User, Wotd
 # To get a random WOTD
 from  sqlalchemy.sql.expression import func, select
 # For the search page
@@ -15,7 +15,7 @@ from flask_limiter.util import get_remote_address
 limiter = Limiter(app, key_func=get_remote_address)
 
 # Forms
-from sachiye.forms import LoginForm, UserForm, WotdForm
+from wotd.forms import LoginForm, UserForm, WotdForm
 
 
 #############

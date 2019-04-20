@@ -1,6 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+
 import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 ################
 # Init the app #
@@ -10,7 +13,9 @@ app = Flask(__name__)
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////opt/sachiye/wotd.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.path.join(basedir, 'wotd.db')
+
+print(app.config['SQLALCHEMY_DATABASE_URI'])
 db = SQLAlchemy(app)
 
 
@@ -19,4 +24,4 @@ db = SQLAlchemy(app)
 app.secret_key = os.environ['SECRET']
 
 # Import our routes
-from sachiye import routes
+from wotd import routes

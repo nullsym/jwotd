@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from sachiye import db
-from sachiye.models import Wotd
+from wotd import db
+from wotd.models import Wotd
 import argparse
 
 

@@ -1,10 +1,13 @@
-# Setting up the environment
-1. `npm install node-sass bulma --save-dev`
+# Use Bulma locally instead of CDN
 
-# Common tasks
+**Install**
 
-## Update
+* npm install node-sass bulma --save-dev
+
+**Update**
+
 * npm update --save
 
-## Build the CSS
+**Build the CSS**
+
 * npm run css-build

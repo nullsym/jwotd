@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from sachiye import db
-from sachiye.models import User, Wotd
+from wotd import db
+from wotd.models import User, Wotd
 
 
 # Create the DB

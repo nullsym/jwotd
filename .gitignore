@@ -1,10 +1,7 @@
 # Do not track nodejs dependencies
 bot/node_modules
 www/bulma/node_modules
-# Do not track Python's virtual environment
-www/.venv
-# Do not track Python's cache
-**/__pycache__/
 # Do not track sensitive files
-www/secret.txt
 bot/run
+# Do not track the DB
+www/wotd/wotd.db

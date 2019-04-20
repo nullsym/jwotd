@@ -1,5 +1,5 @@
 <!-- MACROS -->
-{% macro modals(id, url, onclick, uid, wotd, romaji, defn, date, example, onclick2) -%}
+{% macro modals(id, url, onclick, uid, wotd, romaji, defn, date, example) -%}
   <div class="modal" id="{{ id }}">
   <div class="modal-background"></div>
   <div class="modal-card">
@@ -56,7 +56,7 @@
       </section>
       <footer class="modal-card-foot">
         {{ form.submit(class="button is-success") }}
-        <button class="button" type="button" onclick="{{ onclick2 }}">Cancel</button>
+        <button class="button" type="button" onclick="{{ onclick }}">Cancel</button>
       </footer>
     </form>
   </div>
@@ -66,8 +66,8 @@
 
 <!-- Edit Modal -->
 {{ modals("editModal", url_for('admin_edit'), "toggleEditModal()",
-    wotd.uid, wotd.wotd, wotd.romaji, wotd.defn, wotd.date, wotd.example, "toggleEditModal()") }}
+    wotd.uid, wotd.wotd, wotd.romaji, wotd.defn, wotd.date, wotd.example) }}
 
 <!-- Add Modal -->
 {{ modals("addModal", url_for('admin_add'), "toggleAddModal()",
-    "", "", "", "", wotd.date, "", "toggleAddModal()") }}
+    "", "", "", "", wotd.date, "") }}

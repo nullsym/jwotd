@@ -1,5 +1,5 @@
-Sachiye
-=========
+Japanese Word of the Day (JWOTD)
+================================
 
 A website that shows a list of Japanese words. Has an administration panel that allows editing, adding, and deleting entries. It grabs the Japenese words from Twitch chat.
 

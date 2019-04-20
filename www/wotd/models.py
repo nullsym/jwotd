@@ -1,5 +1,5 @@
 # Imports from our app
-from sachiye import db, app
+from wotd import db, app
 
 # Flask-Login works via the LoginManager class: Thus, we need
 # to start things off by telling LoginManager about our Flask app

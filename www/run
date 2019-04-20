@@ -2,4 +2,4 @@
 
 myip="127.0.0.1:8000"
 opt="--workers 3"
-gunicorn $opt --bind $myip sachiye:app
+gunicorn $opt --bind $myip wotd:app
