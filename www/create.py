@@ -12,6 +12,10 @@ admin = User(username='admin')
 admin.set_password('password')
 db.session.add(admin)
 
+# Modify a user's password
+# me = User.query.filter_by(username='my_name').first()
+# me.set_password('Much secret')
+
 # Add a testing wotd
 for i in range(1,200):
     t = Wotd(wotd='Wotd numba %d' % i, romaji='romaji', defn='Definition here')
