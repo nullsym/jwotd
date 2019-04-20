@@ -8,6 +8,6 @@ run_cmd() {
 }
 
 pushd . > /dev/null 2>&1
-cd $dir/www && source venv/bin/activate && sleep 1s
+cd $dir/www && source .venv/bin/activate && sleep 1s
 run_cmd "$1" "$2" "$3"
 popd > /dev/null 2>&1
